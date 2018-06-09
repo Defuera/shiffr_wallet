@@ -1,18 +1,13 @@
-import 'package:flutter/src/widgets/editable_text.dart';
+import 'package:shiffr_wallet/app/Preferences.dart';
 
 class LoginPresenter {
-//  final _preferences = Preferences();
-//  final TextEditingController _keyController;
-//  final TextEditingController _secretController;
+  final _preferences = Preferences();
 
   LoginPresenter();
 
   void onLoginPressed(String key, String secret) {
-//    final key = _keyController.text;
-//    final secret = _secretController.text;
-
     print("login pressed: $key, $secret");
-//    _preferences.store(key, secret);
+    _preferences.store(key, secret);
   }
 
 
@@ -34,16 +29,11 @@ class LoginPresenter {
   }
 
   loadSavedCredentials() {
-    loadData();
-  }
+    final tuple = await _preferences.get();
+    final key = tuple.key;
+    final secret = tuple.secret;
 
-  loadData() async {
-//    final tuple = await _preferences.get();
-//    final key = tuple.key;
-//    final secret = tuple.secret;
-//
-//    _keyController.text = key;
-//    _secretController.text = secret;
+    print("load credentials: $key, $secret");
   }
 
 }
