@@ -29,6 +29,10 @@ class LoginPresenter {
   }
 
   loadSavedCredentials() {
+    loadData();
+  }
+
+  loadData() async {
     final tuple = await _preferences.get();
     final key = tuple.key;
     final secret = tuple.secret;

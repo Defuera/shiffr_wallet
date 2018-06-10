@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shiffr_wallet/overview/OverviewPage.dart';
 
 import 'LoginPresenter.dart';
 
@@ -58,6 +59,12 @@ class LoginPage extends StatelessWidget {
                                 decoration: TextDecoration.underline)),
                       ),
                     ),
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(builder: (context) => new OverviewPage()),
+                      );
+                    },
                   ),
                 ]))),
       );
