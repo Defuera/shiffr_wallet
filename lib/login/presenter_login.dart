@@ -1,4 +1,4 @@
-import 'package:shiffr_wallet/app/Preferences.dart';
+import 'package:shiffr_wallet/app/preferences.dart';
 
 class LoginPresenter {
   final _preferences = Preferences();

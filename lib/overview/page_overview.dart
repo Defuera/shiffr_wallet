@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 
-import 'OverviewPresenter.dart';
+import 'presenter_overview.dart';
 
 class OverviewPage extends StatefulWidget {
+
   @override
-  _OverviewPageState createState() => _OverviewPageState();
+  _OverviewPageState createState() {
+    final OverviewPresenter _presenter = OverviewPresenter();
+    _presenter.start();
+    return _OverviewPageState(_presenter);
+  }
+
 }
 
 class _OverviewPageState extends State<OverviewPage> {
-  final OverviewPresenter _presenter = OverviewPresenter();
+  OverviewPresenter _presenter;
+
+  _OverviewPageState(this._presenter);
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         primary: true,
@@ -25,5 +34,7 @@ class _OverviewPageState extends State<OverviewPage> {
         ],
       ),
     );
+
   }
+
 }

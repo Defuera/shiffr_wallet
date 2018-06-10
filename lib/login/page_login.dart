@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shiffr_wallet/overview/OverviewPage.dart';
+import 'package:shiffr_wallet/overview/page_overview.dart';
 
-import 'LoginPresenter.dart';
+import 'presenter_login.dart';
 
 class LoginPage extends StatelessWidget {
   final _apiKeyController = TextEditingController();
