@@ -1,27 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:shiffr_wallet/detailed/page_detailed.dart';
 
-import 'presenter_overview.dart';
+import 'presenter_detailed.dart';
 
-class OverviewPage extends StatefulWidget {
+class DetailedPage extends StatefulWidget {
+
+  final String _pair;
+
+  DetailedPage(this._pair);
+
   @override
-  OverviewPageState createState() {
-    return OverviewPageState();
+  DetailedPageState createState() {
+    return DetailedPageState(_pair);
   }
 }
 
 enum Status { LOADING, DATA, ERROR }
 
-class OverviewPageState extends State<OverviewPage> {
+class DetailedPageState extends State<DetailedPage> {
   var _status = Status.LOADING;
   List<String> _data;
 
-  OverviewPresenter _presenter;
+  DetailedPresenter _presenter;
+
+  final String _pair;
+
+  DetailedPageState(this._pair);
 
   @override
   void initState() {
     super.initState();
-    _presenter = OverviewPresenter(this);
+    _presenter = DetailedPresenter(this);
     _presenter.start();
   }
 
@@ -67,7 +75,7 @@ class OverviewPageState extends State<OverviewPage> {
     return Scaffold(
       appBar: AppBar(
         primary: true,
-        title: Text("Overview"),
+        title: Text(_pair),
       ),
       body: widget,
     );
@@ -81,11 +89,7 @@ class OverviewPageState extends State<OverviewPage> {
                 child: InkWell(
               // When the user taps the button, show a snackbar
               onTap: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => DetailedPage(_data[index])),
-                );
+                Navigator.push(context, PairDetailedPage(_data[index]))
 //                showSnackbar(context, "Buy more ${_data[index]}");
               },
               child: new Container(
@@ -99,11 +103,11 @@ class OverviewPageState extends State<OverviewPage> {
       );
 
   Widget getErrorView() => GestureDetector(
-        child: Center(
-          child: Text("Network error, try again later"),
-        ),
-        onTap: () => _presenter.loadListPairs(),
-      );
+    child: Center(
+      child: Text("Network error, try again later"),
+    ),
+    onTap: () => _presenter.loadListPairs(),
+  );
 
   void showSnackbar(BuildContext context, String text) {
     Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(text)));

@@ -16,11 +16,17 @@ class OverviewPresenter {
 
   void loadListPairs() async {
     _overviewPageState.showLoading();
-    var data = await _repository.getSymbols();
-    await new Future.delayed(const Duration(minutes: 400)); //todo remove, it's only for debug
 
-    print("loadListPairs: $data");
+    try {
+      var data = await _repository.getSymbols();
+      await new Future.delayed(
+          const Duration(milliseconds: 400)); //todo remove, it's only for debug
 
-    _overviewPageState.showData(data);
+      print("loadListPairs: $data");
+
+      _overviewPageState.showData(data);
+    } catch (SocketException) {
+      _overviewPageState.showError();
+    }
   }
 }
