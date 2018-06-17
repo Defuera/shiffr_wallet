@@ -5,36 +5,80 @@ import 'presenter_overview.dart';
 class OverviewPage extends StatefulWidget {
 
   @override
-  _OverviewPageState createState() {
-    final OverviewPresenter _presenter = OverviewPresenter();
-    _presenter.start();
-    return _OverviewPageState(_presenter);
+  OverviewPageState createState() {
+    return OverviewPageState();
   }
 
 }
 
-class _OverviewPageState extends State<OverviewPage> {
+enum Status { LOADING, DATA, ERROR }
+
+class OverviewPageState extends State<OverviewPage> {
+  var _status = Status.LOADING;
+  List<String> _data;
+
   OverviewPresenter _presenter;
 
-  _OverviewPageState(this._presenter);
+  @override
+  void initState() {
+    super.initState();
+    _presenter = OverviewPresenter(this);
+    _presenter.start();
+  }
+
+  //region state manipulation
+
+  void showLoading() {
+    setState(() {
+      _status = Status.LOADING;
+    });
+  }
+
+  void showData(List<String> data) {
+    setState(() {
+      _data = data;
+      _status = Status.DATA;
+    });
+  }
+
+  void showError(List<String> data) {
+    setState(() {
+      _status = Status.ERROR;
+    });
+  }
+
+  //endregion
 
   @override
   Widget build(BuildContext context) {
+    var widget;
+
+    switch (_status) {
+      case Status.LOADING:
+        widget = getLoadingView();
+        break;
+      case Status.DATA:
+        widget = getList();
+        break;
+      case Status.ERROR:
+        widget = getLoadingView(); //todo
+        break;
+    }
 
     return Scaffold(
       appBar: AppBar(
         primary: true,
         title: Text("Overview"),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Container(),
-          ),
-        ],
-      ),
+      body: widget,
     );
-
   }
 
+  Widget getLoadingView() => CircularProgressIndicator();
+
+  Widget getList() =>
+      ListView.builder(
+        itemCount: _data.length,
+        itemBuilder: (BuildContext context, int index) => Text(_data[index]),
+      );
 }
