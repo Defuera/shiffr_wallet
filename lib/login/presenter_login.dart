@@ -1,15 +1,28 @@
+import 'package:shiffr_wallet/app/model/bitfinex_repository.dart';
 import 'package:shiffr_wallet/app/preferences.dart';
+import 'package:shiffr_wallet/login/page_login.dart';
 
 class LoginPresenter {
   final _preferences = Preferences();
+  final _repository = BitfinexRepository();
 
-  LoginPresenter();
+  final LoginPage _view;
 
-  void onLoginPressed(String key, String secret) {
+  LoginPresenter(this._view);
+
+  void onLoginPressed(String key, String secret) async {
     print("login pressed: $key, $secret");
-    _preferences.store(key, secret);
-  }
 
+    try {
+      final balances = await _repository.getBalances();
+
+      _view.showBalancesPage(balances);
+
+      _preferences.store(key, secret);
+    } catch (exception) {
+      print(exception.toString());
+    }
+  }
 
 //
 //  fetchPost() async {
@@ -24,9 +37,7 @@ class LoginPresenter {
 //    print(event);
 //  }
 //
-  proceedWithoutLogin() {
-
-  }
+  proceedWithoutLogin() {}
 
   loadSavedCredentials() {
     loadData();
@@ -39,5 +50,4 @@ class LoginPresenter {
 
     print("load credentials: $key, $secret");
   }
-
 }

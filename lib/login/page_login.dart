@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shiffr_wallet/app/model/balance.dart';
 import 'package:shiffr_wallet/overview/page_overview.dart';
 
 import 'presenter_login.dart';
@@ -6,7 +7,14 @@ import 'presenter_login.dart';
 class LoginPage extends StatelessWidget {
   final _apiKeyController = TextEditingController();
   final _apiSecretController = TextEditingController();
-  final _presenter = LoginPresenter();
+
+  LoginPresenter _presenter;
+
+ @override
+  StatelessElement createElement() {
+   _presenter = LoginPresenter(this);
+    return super.createElement();
+  }
 
   @override
   Widget build(BuildContext context) => Material(
@@ -59,13 +67,16 @@ class LoginPage extends StatelessWidget {
                                 decoration: TextDecoration.underline)),
                       ),
                     ),
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.push(
                         context,
-                        new MaterialPageRoute(builder: (context) => OverviewPage()),
+                        new MaterialPageRoute(
+                            builder: (context) => OverviewPage()),
                       );
                     },
                   ),
                 ]))),
       );
+
+  void showBalancesPage(List<Balance> balances) {}
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'presenter_detailed.dart';
 
 class DetailedPage extends StatefulWidget {
-
   final String _pair;
 
   DetailedPage(this._pair);
@@ -89,7 +88,12 @@ class DetailedPageState extends State<DetailedPage> {
                 child: InkWell(
               // When the user taps the button, show a snackbar
               onTap: () {
-                Navigator.push(context, PairDetailedPage(_data[index]))
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => DetailedPage(_data[index])),
+//                    DetailedPage(_data[index])
+                );
 //                showSnackbar(context, "Buy more ${_data[index]}");
               },
               child: new Container(
@@ -103,11 +107,11 @@ class DetailedPageState extends State<DetailedPage> {
       );
 
   Widget getErrorView() => GestureDetector(
-    child: Center(
-      child: Text("Network error, try again later"),
-    ),
-    onTap: () => _presenter.loadListPairs(),
-  );
+        child: Center(
+          child: Text("Network error, try again later"),
+        ),
+        onTap: () => _presenter.loadListPairs(),
+      );
 
   void showSnackbar(BuildContext context, String text) {
     Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(text)));

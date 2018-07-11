@@ -1,11 +1,8 @@
-import 'dart:async';
-
-import 'package:shiffr_wallet/app/repository_bitfinex.dart';
 import 'package:shiffr_wallet/detailed/page_detailed.dart';
 
 class DetailedPresenter {
-  final _repository = BitfinexRepository();
-
+//  final _repository = BitfinexRepository();
+//
   final DetailedPageState _pageState;
 
   DetailedPresenter(this._pageState);
@@ -29,5 +26,4 @@ class DetailedPresenter {
 //      _pageState.showError();
 //    }
   }
-
 }
