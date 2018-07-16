@@ -1,10 +1,11 @@
-import 'package:shiffr_wallet/app/model/bitfinex_repository.dart';
+import 'package:shiffr_wallet/app/model/bitfinex_api_v2.dart';
 import 'package:shiffr_wallet/app/preferences.dart';
 import 'package:shiffr_wallet/login/page_login.dart';
 
+
 class LoginPresenter {
   final _preferences = Preferences();
-  final _repository = BitfinexRepository();
+  final _api = BitfinexApiV2();
 
   final LoginPage _view;
 
@@ -14,13 +15,17 @@ class LoginPresenter {
     print("login pressed: $key, $secret");
 
     try {
-      final balances = await _repository.getBalances();
+      final balances = await _api.getWallets(key, secret);
+
+
+      print("get balancess success: $balances");
+      _preferences.store(key, secret); //todo move to interactor?
+
 
       _view.showBalancesPage(balances);
-
-      _preferences.store(key, secret);
-    } catch (exception) {
-      print(exception.toString());
+    } catch (exception, stacktrace) {
+      print("exception: ${exception.toString()}");
+      print(stacktrace.toString());
     }
   }
 

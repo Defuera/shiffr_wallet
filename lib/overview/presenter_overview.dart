@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:shiffr_wallet/app/repository_bitfinex.dart';
+import 'package:shiffr_wallet/detailed/page_detailed.dart';
 import 'package:shiffr_wallet/overview/page_overview.dart';
 
 class OverviewPresenter {
@@ -28,5 +31,13 @@ class OverviewPresenter {
     } catch (SocketException) {
       _overviewPageState.showError();
     }
+  }
+
+  void navigateTo(BuildContext context, String pair) {
+    Navigator.push(
+      context,
+      new MaterialPageRoute(
+          builder: (context) => DetailedPage(pair)),
+    );
   }
 }

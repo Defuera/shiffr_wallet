@@ -11,6 +11,7 @@ class Balance {
       currency: jsonMap["currency"],
       amount: jsonMap["amount"],
       available: jsonMap["available"]);
+  
 }
 
 enum BalanceType { deposit, exchange, trading }

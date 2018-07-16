@@ -77,26 +77,22 @@ class OverviewPageState extends State<OverviewPage> {
 
   Widget getListView() => ListView.builder(
         itemCount: _data.length,
-        itemBuilder: (BuildContext context, int index) => GestureDetector(
-                child: InkWell(
-              // When the user taps the button, show a snackbar
-              onTap: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => DetailedPage(_data[index])),
-                );
-//                showSnackbar(context, "Buy more ${_data[index]}");
-              },
-              child: new Container(
-                padding: new EdgeInsets.all(16.0),
-                child: Text(
-                  _data[index],
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-              ),
-            )),
+        itemBuilder: (BuildContext context, int index) => getPairListItem(context, index),
       );
+
+  GestureDetector getPairListItem(BuildContext context, int index) {
+    return GestureDetector(
+        child: InkWell(
+          onTap: () => _presenter.navigateTo(context, _data[index]),
+          child: new Container(
+            padding: new EdgeInsets.all(16.0),
+            child: Text(
+              _data[index],
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            ),
+          ),
+    ));
+  }
 
   Widget getErrorView() => GestureDetector(
         child: Center(
