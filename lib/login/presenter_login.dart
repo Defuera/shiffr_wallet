@@ -1,4 +1,4 @@
-import 'package:shiffr_wallet/app/model/bitfinex_api_v2.dart';
+import 'package:shiffr_wallet/app/model/api/bitfinex_api_v2.dart';
 import 'package:shiffr_wallet/app/preferences.dart';
 import 'package:shiffr_wallet/login/page_login.dart';
 
@@ -15,7 +15,7 @@ class LoginPresenter {
     print("login pressed: $key, $secret");
 
     try {
-      final balances = await _api.getWallets(key, secret);
+      final balances = await _api.getWallets();
 
 
       print("get balancess success: $balances");
