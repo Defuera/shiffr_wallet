@@ -8,7 +8,7 @@ import 'package:pointycastle/digests/sha384.dart';
 import 'package:pointycastle/export.dart';
 import 'package:pointycastle/macs/hmac.dart';
 import 'package:pointycastle/pointycastle.dart';
-import 'package:shiffr_wallet/app/model/balance.dart';
+import 'package:shiffr_wallet/app/model/Wallet.dart';
 import 'package:shiffr_wallet/app/model/credentials_provider.dart';
 
 class BitfinexApiV2 {
@@ -18,12 +18,12 @@ class BitfinexApiV2 {
   final baseUrl = "https://api.bitfinex.com";
   final pathWallets = "v2/auth/r/wallets";
 
-  Future<List<Balance>> getWallets() async {
+  Future<List<Wallet>> getWallets() async {
     var responseString = await postMy(pathWallets);
     print("getWallets response: $responseString");
     var map = await json.decode(responseString);
 
-    return BalanceList.fromJson(map).balances;
+    return WalletList.fromJson(map).balances;
   }
 
   postMy(String path) async {

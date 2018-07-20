@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shiffr_wallet/app/model/balance.dart';
+import 'package:shiffr_wallet/app/model/Wallet.dart';
 import 'package:shiffr_wallet/overview/page_overview.dart';
 
 import 'presenter_login.dart';
@@ -39,8 +39,7 @@ class LoginPage extends StatelessWidget {
                   GestureDetector(
                     child: RaisedButton(
                       child: Text("Login"),
-                      onPressed: () => _presenter.onLoginPressed(
-                          _apiKeyController.text, _apiSecretController.text),
+                      onPressed: () => _presenter.onLoginPressed(context, _apiKeyController.text, _apiSecretController.text),
                     ),
                     onLongPress: () => print("long pressed"),
                   ),
@@ -78,5 +77,18 @@ class LoginPage extends StatelessWidget {
                 ]))),
       );
 
-  void showBalancesPage(List<Balance> balances) {}
+  void showBalancesPage(List<Wallet> wallets) {}
+
+  void showLoading(BuildContext context, bool show) {
+    if (show){
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) => Center(child: CircularProgressIndicator())
+      );
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
 }

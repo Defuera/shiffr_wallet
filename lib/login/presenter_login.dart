@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/model/api/bitfinex_api_v2.dart';
 import 'package:shiffr_wallet/app/preferences.dart';
 import 'package:shiffr_wallet/login/page_login.dart';
@@ -11,19 +12,22 @@ class LoginPresenter {
 
   LoginPresenter(this._view);
 
-  void onLoginPressed(String key, String secret) async {
-    print("login pressed: $key, $secret");
+  void onLoginPressed(BuildContext context, String key, String secret) async {
+    print("onLoginPressed");
+    _view.showLoading(context, true);
 
     try {
-      final balances = await _api.getWallets();
+      final wallets = await _api.getWallets();
 
+      _view.showLoading(context, false);
 
-      print("get balancess success: $balances");
+      print("get balancess success: $wallets");
       _preferences.store(key, secret); //todo move to interactor?
 
 
-      _view.showBalancesPage(balances);
+      _view.showBalancesPage(wallets);
     } catch (exception, stacktrace) {
+      _view.showLoading(context, false);
       print("exception: ${exception.toString()}");
       print(stacktrace.toString());
     }
