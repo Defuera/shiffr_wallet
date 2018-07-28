@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/model/Wallet.dart';
 import 'package:shiffr_wallet/overview/page_overview.dart';
+import 'package:shiffr_wallet/wallets_list/page_wallets_list.dart';
 
 import 'presenter_login.dart';
 
@@ -66,18 +68,20 @@ class LoginPage extends StatelessWidget {
                                 decoration: TextDecoration.underline)),
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => OverviewPage()),
-                      );
-                    },
+                    onPressed: () => navigateTo(context, OverviewPage()),
                   ),
                 ]))),
       );
 
-  void showBalancesPage(List<Wallet> wallets) {}
+  Future navigateTo(BuildContext context, Widget page) => Navigator.push(
+                      context,
+                      new MaterialPageRoute(builder: (context) => page),
+    );
+
+
+  void showWalletsPage(BuildContext context, List<Wallet> wallets) {
+    navigateTo(context, WalletsListPage(wallets));
+  }
 
   void showLoading(BuildContext context, bool show) {
     if (show){

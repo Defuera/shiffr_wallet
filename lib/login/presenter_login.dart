@@ -17,15 +17,13 @@ class LoginPresenter {
     _view.showLoading(context, true);
 
     try {
-      final wallets = await _api.getWallets();
-
       _view.showLoading(context, false);
 
-      print("get balancess success: $wallets");
-      _preferences.store(key, secret); //todo move to interactor?
+      final wallets = await _api.getWallets();
+      print("get wallets success: $wallets");
+      _preferences.store(key, secret);
 
-
-      _view.showBalancesPage(wallets);
+      _view.showWalletsPage(context, wallets);
     } catch (exception, stacktrace) {
       _view.showLoading(context, false);
       print("exception: ${exception.toString()}");
