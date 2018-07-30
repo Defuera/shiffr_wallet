@@ -21,7 +21,7 @@ class LoginPresenter {
 
       final wallets = await _api.getWallets();
       print("get wallets success: $wallets");
-      _preferences.store(key, secret);
+      _preferences.storeCredentials(key, secret);
 
       _view.showWalletsPage(context, wallets);
     } catch (exception, stacktrace) {
@@ -51,7 +51,7 @@ class LoginPresenter {
   }
 
   loadData() async {
-    final tuple = await _preferences.get();
+    final tuple = await _preferences.getCredentials();
     final key = tuple.key;
     final secret = tuple.secret;
 

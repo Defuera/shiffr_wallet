@@ -3,31 +3,33 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
-
   static const _PREF_KEY = 'key';
   static const _PREF_SECRET = 'secret';
 
-  store(String key, String secret) async {
+  storeCredentials(String key, String secret) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(_PREF_KEY, key);
     await prefs.setString(_PREF_SECRET, secret);
   }
 
-
-  Future<Tuple> get() async {
+  Future<Credentials> getCredentials() async {
     final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
     final key = prefs.getString(_PREF_KEY);
     final secret = prefs.getString(_PREF_SECRET);
 
-    return Tuple(key, secret);
+    if (key == null || secret == null) {
+      prefs.clear();
+      return null;
+    } else {
+      return Credentials(key, secret);
+    }
   }
-
 }
 
-class Tuple {
-
+class Credentials {
   final String key;
   final String secret;
 
-  Tuple(this.key, this.secret);
+  Credentials(this.key, this.secret);
 }

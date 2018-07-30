@@ -9,11 +9,11 @@ import 'package:pointycastle/export.dart';
 import 'package:pointycastle/macs/hmac.dart';
 import 'package:pointycastle/pointycastle.dart';
 import 'package:shiffr_wallet/app/model/Wallet.dart';
-import 'package:shiffr_wallet/app/model/credentials_provider.dart';
+import 'package:shiffr_wallet/app/preferences.dart';
 
 class BitfinexApiV2 {
 
-  final _credentialsProvider = CredentialsProvider();
+  final _prefs = Preferences();
 
   final baseUrl = "https://api.bitfinex.com";
   final pathWallets = "v2/auth/r/wallets";
@@ -27,11 +27,12 @@ class BitfinexApiV2 {
   }
 
   postMy(String path) async {
+    final credentials = await _prefs.getCredentials();
     final response = await post(
       "$baseUrl/$path",
       headers: headers(
-          key: _credentialsProvider.key,
-          secret: _credentialsProvider.secret,
+          key: credentials.key,
+          secret: credentials.secret,
           path: path,
           nonce: getNonce(),
           body: "{}"),
