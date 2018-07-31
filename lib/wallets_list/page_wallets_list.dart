@@ -80,13 +80,14 @@ class WalletsListPageState extends State<WalletsListPage> {
       ),
       body: widget,
       bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedTab,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Exchange"), backgroundColor: Colors.black),
-            BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Margin"), backgroundColor: Colors.black),
-          ],
-          fixedColor: null, //todo it's white, should be primary
-          onTap: (int index) => _presenter.onTabSelected(index)),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Exchange"), backgroundColor: Colors.black),
+          BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Margin"), backgroundColor: Colors.black),
+        ],
+        fixedColor: null, //todo it's white, should be primary
+        onTap: (int index) => _presenter.onTabSelected(index),
+        currentIndex: _selectedTab, //todo causes exception "Another exception was thrown: NoSuchMethodError: The method '>' was called on null."
+      ),
     );
   }
 
@@ -129,6 +130,4 @@ class WalletsListPageState extends State<WalletsListPage> {
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
         )
       ]);
-
-
 }
