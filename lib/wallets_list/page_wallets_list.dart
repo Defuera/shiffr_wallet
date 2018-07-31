@@ -4,11 +4,9 @@ import 'package:shiffr_wallet/app/model/Wallet.dart';
 import 'presenter_wallets_page.dart';
 
 class WalletsListPage extends StatefulWidget {
-
   final List<Wallet> _wallets;
 
   WalletsListPage([this._wallets]);
-
 
   @override
   WalletsListPageState createState() {
@@ -21,6 +19,7 @@ enum Status { LOADING, DATA, ERROR }
 class WalletsListPageState extends State<WalletsListPage> {
   Status _status;
 
+  int _selectedTab;
   List<Wallet> _wallets;
   WalletsListPresenter _presenter;
 
@@ -34,7 +33,6 @@ class WalletsListPageState extends State<WalletsListPage> {
     _presenter.start();
   }
 
-
   //region state manipulation
 
   void showLoading() {
@@ -43,8 +41,9 @@ class WalletsListPageState extends State<WalletsListPage> {
     });
   }
 
-  void showData(List<Wallet> wallets) {
+  void showData(int tabIndex, List<Wallet> wallets) {
     setState(() {
+      _selectedTab = tabIndex;
       _wallets = wallets;
       _status = Status.DATA;
     });
@@ -57,7 +56,6 @@ class WalletsListPageState extends State<WalletsListPage> {
   }
 
   //endregion
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +79,14 @@ class WalletsListPageState extends State<WalletsListPage> {
         title: Text("WalletsList"),
       ),
       body: widget,
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedTab,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Exchange"), backgroundColor: Colors.black),
+            BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Margin"), backgroundColor: Colors.black),
+          ],
+          fixedColor: null, //todo it's white, should be primary
+          onTap: (int index) => _presenter.onTabSelected(index)),
     );
   }
 
@@ -95,10 +101,10 @@ class WalletsListPageState extends State<WalletsListPage> {
     return GestureDetector(
         child: InkWell(
 //          onTap: () => _presenter.navigateTo(context, _data[index]),
-          child: new Container(
-            padding: new EdgeInsets.all(16.0),
-            child: getWalletWidget(_wallets[index]),
-          ),
+      child: new Container(
+        padding: new EdgeInsets.all(16.0),
+        child: getWalletWidget(_wallets[index]),
+      ),
     ));
   }
 
@@ -113,16 +119,16 @@ class WalletsListPageState extends State<WalletsListPage> {
     Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(text)));
   }
 
-  getWalletWidget(Wallet wallet) =>
-      Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-          Text(
-            wallet.currency,
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            "${wallet.amount}",
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-      )]);
+  getWalletWidget(Wallet wallet) => Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+        Text(
+          wallet.currency,
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          "${wallet.amount}",
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+        )
+      ]);
+
+
 }
