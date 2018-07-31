@@ -97,10 +97,7 @@ class WalletsListPageState extends State<WalletsListPage> {
 //          onTap: () => _presenter.navigateTo(context, _data[index]),
           child: new Container(
             padding: new EdgeInsets.all(16.0),
-            child: Text(
-              _wallets[index].currency,
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
+            child: getWalletWidget(_wallets[index]),
           ),
     ));
   }
@@ -115,4 +112,17 @@ class WalletsListPageState extends State<WalletsListPage> {
   void showSnackbar(BuildContext context, String text) {
     Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(text)));
   }
+
+  getWalletWidget(Wallet wallet) =>
+      Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+          Text(
+            wallet.currency,
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            "${wallet.amount}",
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+      )]);
 }
