@@ -17,9 +17,8 @@ class LoginPresenter {
     _view.showLoading(context, true);
 
     try {
-      _view.showLoading(context, false);
 
-      final wallets = await _api.getWallets();
+      final wallets = await _api.getWalletsToLogin(key, secret);
       print("get wallets success: $wallets");
       _preferences.storeCredentials(key, secret);
 

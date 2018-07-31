@@ -18,21 +18,29 @@ class BitfinexApiV2 {
   final baseUrl = "https://api.bitfinex.com";
   final pathWallets = "v2/auth/r/wallets";
 
-  Future<List<Wallet>> getWallets() async {
-    var responseString = await postMy(pathWallets);
+  Future<List<Wallet>> getWalletsToLogin(String key, String secret) async {
+    var responseString = await postMy(key, secret, pathWallets);
     print("getWallets response: $responseString");
     var map = await json.decode(responseString);
 
     return WalletList.fromJson(map).balances;
   }
 
-  postMy(String path) async {
+  Future<List<Wallet>> getWallets() async {
     final credentials = await _prefs.getCredentials();
+    var responseString = await postMy(credentials.key, credentials.secret, pathWallets);
+    print("getWallets response: $responseString");
+    var map = await json.decode(responseString);
+
+    return WalletList.fromJson(map).balances;
+  }
+
+  postMy(String key, String secret, String path) async {
     final response = await post(
       "$baseUrl/$path",
       headers: headers(
-          key: credentials.key,
-          secret: credentials.secret,
+          key: key,
+          secret: secret,
           path: path,
           nonce: getNonce(),
           body: "{}"),
