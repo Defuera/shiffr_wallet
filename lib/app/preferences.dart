@@ -14,7 +14,6 @@ class Preferences {
 
   Future<Credentials> getCredentials() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.clear();
     final key = prefs.getString(_PREF_KEY);
     final secret = prefs.getString(_PREF_SECRET);
 

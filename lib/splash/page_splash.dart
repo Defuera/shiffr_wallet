@@ -2,19 +2,29 @@ import 'package:flutter/material.dart';
 
 import 'presenter_splash.dart';
 
-class SplashPage extends StatelessWidget {
+
+class SplashPage extends StatefulWidget {
+
+  @override
+  SplashPageState createState() {
+    return SplashPageState();
+  }
+}
+
+class SplashPageState extends State<SplashPage> {
+
   SplashPresenter _presenter;
 
   @override
-  StatelessElement createElement() {
-    _presenter = SplashPresenter(this);
-    return super.createElement();
+  void initState() {
+    super.initState();
+    _presenter = SplashPresenter();
+    _presenter.start(context);
   }
+
 
   @override
   Widget build(BuildContext context) {
-//    _presenter.start(context);
-
     return Material(
         child: Container(
             color: Theme.of(context).accentColor,

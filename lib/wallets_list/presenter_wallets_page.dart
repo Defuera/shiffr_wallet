@@ -27,6 +27,7 @@ class WalletsListPresenter {
   }
 
   void loadData() async {
+    print("WalletsListPresenter loadData");
     _viewState.showLoading();
 
     try {
@@ -35,7 +36,9 @@ class WalletsListPresenter {
       print("loadListPairs: $data");
 
       _viewState.showData(data);
-    } catch (SocketException) {
+    } catch (socketException) {
+
+      print("exception: ${socketException.toString()}");
       _viewState.showError();
     }
   }

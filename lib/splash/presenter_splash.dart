@@ -1,18 +1,23 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/preferences.dart';
 import 'package:shiffr_wallet/login/page_login.dart';
-import 'package:shiffr_wallet/splash/page_splash.dart';
 import 'package:shiffr_wallet/wallets_list/page_wallets_list.dart';
 
 class SplashPresenter {
   final _preferences = Preferences();
 
-  final SplashPage _view;
-
-  SplashPresenter(this._view);
-
   void start(BuildContext context) {
-    if (isLoggedIn()) {
+    navigate(context);
+  }
+
+  void navigate(BuildContext context) async {
+    var loggedIn = await isLoggedIn();
+    await Future.delayed(Duration(milliseconds: 400));
+
+    Navigator.pop(context);
+    if (loggedIn) {
       navigateTo(context, WalletsListPage());
     } else {
       navigateTo(context, LoginPage());
@@ -24,5 +29,9 @@ class SplashPresenter {
         new MaterialPageRoute(builder: (context) => page),
       );
 
-  bool isLoggedIn() => _preferences.getCredentials() != null;
+  Future<bool> isLoggedIn() async {
+    var credentials = await _preferences.getCredentials();
+    final loggedIn = credentials != null;
+    return loggedIn;
+  }
 }
