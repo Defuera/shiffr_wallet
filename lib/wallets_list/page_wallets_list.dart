@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/model/Wallet.dart';
+import 'package:shiffr_wallet/wallet_detailed/page_wallet_detailed.dart';
 
 import 'presenter_wallets_page.dart';
 
@@ -19,7 +20,7 @@ enum Status { LOADING, DATA, ERROR }
 class WalletsListPageState extends State<WalletsListPage> {
   Status _status;
 
-  int _selectedTab;
+  int _selectedTab = 0;
   List<Wallet> _wallets;
   WalletsListPresenter _presenter;
 
@@ -81,12 +82,18 @@ class WalletsListPageState extends State<WalletsListPage> {
       body: widget,
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Exchange"), backgroundColor: Colors.black),
-          BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Margin"), backgroundColor: Colors.black),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.atm),
+              title: Text("Exchange"),
+              backgroundColor: Colors.black),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.atm),
+              title: Text("Margin"),
+              backgroundColor: Colors.black),
         ],
         fixedColor: null, //todo it's white, should be primary
         onTap: (int index) => _presenter.onTabSelected(index),
-        currentIndex: _selectedTab, //todo causes exception "Another exception was thrown: NoSuchMethodError: The method '>' was called on null."
+        currentIndex: _selectedTab,
       ),
     );
   }
@@ -95,19 +102,9 @@ class WalletsListPageState extends State<WalletsListPage> {
 
   Widget getListView() => ListView.builder(
         itemCount: _wallets.length,
-        itemBuilder: (BuildContext context, int index) => getPairListItem(context, index),
+        itemBuilder: (BuildContext context, int index) =>
+            getWalletWidget(_wallets[index]),
       );
-
-  GestureDetector getPairListItem(BuildContext context, int index) {
-    return GestureDetector(
-        child: InkWell(
-//          onTap: () => _presenter.navigateTo(context, _data[index]),
-      child: new Container(
-        padding: new EdgeInsets.all(16.0),
-        child: getWalletWidget(_wallets[index]),
-      ),
-    ));
-  }
 
   Widget getErrorView() => GestureDetector(
         child: Center(
@@ -120,14 +117,29 @@ class WalletsListPageState extends State<WalletsListPage> {
     Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(text)));
   }
 
-  getWalletWidget(Wallet wallet) => Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-        Text(
-          wallet.currency,
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          "${wallet.amount}",
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-        )
-      ]);
+  getWalletWidget(Wallet wallet) => GestureDetector(
+        child: InkWell(
+            onTap: () => navigateTo(context, WalletDetailedPage()),
+            child: new Container(
+                padding: new EdgeInsets.all(16.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        wallet.currency,
+                        style: TextStyle(
+                            fontSize: 18.0, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "${wallet.amount}",
+                        style: TextStyle(
+                            fontSize: 18.0, fontWeight: FontWeight.normal),
+                      )
+                    ]))),
+      );
+
+  navigateTo(BuildContext context, Widget page) => Navigator.push(
+        context,
+        new MaterialPageRoute(builder: (context) => page),
+      );
 }
