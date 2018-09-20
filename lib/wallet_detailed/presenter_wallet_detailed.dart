@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:shiffr_wallet/app/model/Wallet.dart';
+import 'package:shiffr_wallet/app/model/model_wallet.dart';
 import 'package:shiffr_wallet/app/model/api/bitfinex_api_v2.dart';
 import 'package:shiffr_wallet/detailed/page_detailed.dart';
 import 'package:shiffr_wallet/wallet_detailed/page_wallet_detailed.dart';

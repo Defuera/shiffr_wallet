@@ -1,15 +1,3 @@
-//[
-//[
-//WALLET_TYPE,
-//CURRENCY,
-//BALANCE,
-//UNSETTLED_INTEREST,
-//BALANCE_AVAILABLE,
-//...
-//],
-//...
-//]
-
 class Wallet {
   WalletType type; //":"deposit",
   String currency; //":"btc",

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shiffr_wallet/app/model/Wallet.dart';
-import 'package:shiffr_wallet/wallet_detailed/presenter_wallet_detailed.dart';
+import 'package:shiffr_wallet/app/model/model_wallet.dart';
 
 class WalletDetailedPage extends StatefulWidget {
   final Wallet _wallet;

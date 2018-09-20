@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:shiffr_wallet/app/model/Wallet.dart';
+import 'package:shiffr_wallet/app/model/model_wallet.dart';
 import 'package:shiffr_wallet/overview/page_overview.dart';
 import 'package:shiffr_wallet/wallets_list/page_wallets_list.dart';
 
