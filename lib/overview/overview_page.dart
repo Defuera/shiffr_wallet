@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/detailed/page_detailed.dart';
 
-import 'presenter_overview.dart';
+import 'overview_presenter.dart';
 
 class OverviewPage extends StatefulWidget {
   @override

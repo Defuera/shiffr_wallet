@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/model/api/bitfinex_api_v2.dart';
 import 'package:shiffr_wallet/app/preferences.dart';
-import 'package:shiffr_wallet/login/page_login.dart';
+import 'package:shiffr_wallet/login/login_page.dart';
 
 
 class LoginPresenter {

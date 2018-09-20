@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'presenter_splash.dart';
+import 'splash_presenter.dart';
 
 
 class SplashPage extends StatefulWidget {

@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/preferences.dart';
-import 'package:shiffr_wallet/login/page_login.dart';
-import 'package:shiffr_wallet/wallets_list/page_wallets_list.dart';
+import 'package:shiffr_wallet/login/login_page.dart';
+import 'package:shiffr_wallet/wallets_list/wallets_list_page.dart';
 
 class SplashPresenter {
   final _preferences = Preferences();

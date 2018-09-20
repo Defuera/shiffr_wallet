@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:shiffr_wallet/app/repository_bitfinex.dart';
 import 'package:shiffr_wallet/detailed/page_detailed.dart';
-import 'package:shiffr_wallet/overview/page_overview.dart';
+import 'package:shiffr_wallet/overview/overview_page.dart';
 
 class OverviewPresenter {
   final _repository = BitfinexRepository();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shiffr_wallet/splash/page_splash.dart';
+import 'package:shiffr_wallet/splash/splash_page.dart';
 
 class Application extends StatelessWidget {
   @override

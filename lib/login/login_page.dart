@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/model/model_wallet.dart';
-import 'package:shiffr_wallet/overview/page_overview.dart';
-import 'package:shiffr_wallet/wallets_list/page_wallets_list.dart';
+import 'package:shiffr_wallet/overview/overview_page.dart';
+import 'package:shiffr_wallet/wallets_list/wallets_list_page.dart';
 
-import 'presenter_login.dart';
+import 'login_presenter.dart';
 
 class LoginPage extends StatelessWidget {
   final _apiKeyController = TextEditingController();

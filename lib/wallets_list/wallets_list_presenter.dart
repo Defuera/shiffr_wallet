@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:shiffr_wallet/app/model/model_wallet.dart';
 import 'package:shiffr_wallet/detailed/page_detailed.dart';
 import 'package:shiffr_wallet/wallets_list/interactor.dart';
-import 'package:shiffr_wallet/wallets_list/page_wallets_list.dart';
+import 'package:shiffr_wallet/wallets_list/wallets_list_page.dart';
 
 class WalletsListPresenter {
   final Interactor _interactor = Interactor();
