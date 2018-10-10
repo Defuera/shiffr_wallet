@@ -16,11 +16,11 @@ class SplashPresenter {
     var loggedIn = await isLoggedIn();
     await Future.delayed(Duration(milliseconds: 400));
 
-//    if (loggedIn) {
+    if (loggedIn) {
       navigateTo(context, WalletsListPage());
-//    } else {
-//      navigateTo(context, LoginPage());
-//    }
+    } else {
+      navigateTo(context, LoginPage());
+    }
   }
 
   navigateTo(BuildContext context, Widget page) => Navigator.push(

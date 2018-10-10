@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:shiffr_wallet/app/model/model_wallet.dart';
@@ -9,15 +11,15 @@ class WalletsListPresenter {
   final Interactor _interactor = Interactor();
 
   final WalletsListPageState _viewState;
-  List<Wallet> _preloadedWallets;
-  List<Wallet> _exchangeWallets;
-  List<Wallet> _marginWallets;
+  final List<Wallet> _preloadedWallets;
+  ViewModel _viewModel;
 
   WalletsListPresenter(this._viewState, this._preloadedWallets);
 
   void start() {
     if (_preloadedWallets != null) {
       onTabSelected(WalletType.exchange.index);
+      onWalletsLoaded(_preloadedWallets);
     } else {
       _viewState.showLoading();
       loadData();
@@ -30,17 +32,26 @@ class WalletsListPresenter {
 
     try {
       final wallets = await _interactor.getWallets();
-//      final _tickers = await getTickersForWallets(wallets);
-      _exchangeWallets = wallets.where((it) => (it.type == WalletType.exchange)).toList();
-      _marginWallets = wallets.where((it) => (it.type == WalletType.margin)).toList();
+      await onWalletsLoaded(wallets);
 
-//      print("loadListPairs: $_wallets");
-
-      onTabSelected(WalletType.exchange.index);
     } catch (socketException) {
       print("exception: ${socketException.toString()}");
       _viewState.showError();
     }
+  }
+
+  Future onWalletsLoaded(wallets) async {
+    final exchangeWallets = wallets.where((it) => (it.type == WalletType.exchange)).toList();
+    final marginWallets = wallets.where((it) => (it.type == WalletType.margin)).toList();
+
+    print("calculate sum for exchange");
+    final exchangeSum = await calculateSum(exchangeWallets);
+    print("calculate sum for margin");
+    final marginSum = await calculateSum(marginWallets);
+
+    _viewModel = ViewModel(exchangeWallets, marginWallets, exchangeSum, marginSum);
+
+    onTabSelected(WalletType.exchange.index);
   }
 
   void navigateTo(BuildContext context, String pair) {
@@ -51,16 +62,31 @@ class WalletsListPresenter {
   }
 
   onTabSelected(int tabIndex) {
-    switch (tabIndex) {
-      case 0:
-        if (_exchangeWallets != null) {
-          _viewState.showData(0, _exchangeWallets);
+    _viewState.showData(tabIndex, _viewModel);
+  }
+
+  Future<double> calculateSum(wallets) async {
+    final tickers = await _interactor.getTickersForWallets(wallets);
+
+    var sum = 0.0;
+    if (tickers != null) {
+      tickers.forEach((ticker) {
+        if (ticker.lastPrice != null){
+          sum += ticker.lastPrice;
         }
-        break;
-      case 1:
-        if (_marginWallets != null) {
-          _viewState.showData(1, _marginWallets);
-        }
-        break;
+      });
     }
-}}
+    return sum;
+  }
+
+}
+
+class ViewModel {
+  List<Wallet> exchangeWallets;
+  List<Wallet> marginWallets;
+  double exchangeSum;
+  double marginSum;
+
+  ViewModel(this.exchangeWallets, this.marginWallets, this.exchangeSum, this.marginSum);
+
+}

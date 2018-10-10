@@ -21,10 +21,12 @@ class WalletsListPageState extends State<WalletsListPage> {
   Status _status;
 
   int _selectedTab = 0;
-  List<Wallet> _wallets;
+  ViewModel _viewModel;
+
+  final List<Wallet> _wallets;
   WalletsListPresenter _presenter;
 
-  WalletsListPageState(this._wallets);
+  WalletsListPageState(this._wallets) {}
 
   @override
   void initState() {
@@ -42,11 +44,11 @@ class WalletsListPageState extends State<WalletsListPage> {
     });
   }
 
-  void showData(int tabIndex, List<Wallet> wallets) {
+  void showData(int tabIndex, ViewModel viewModel) {
     setState(() {
-      _selectedTab = tabIndex;
-      _wallets = wallets;
       _status = Status.DATA;
+      _selectedTab = tabIndex;
+      _viewModel = viewModel;
     });
   }
 
@@ -82,14 +84,8 @@ class WalletsListPageState extends State<WalletsListPage> {
       body: widget,
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.atm),
-              title: Text("Exchange"),
-              backgroundColor: Colors.black),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.atm),
-              title: Text("Margin"),
-              backgroundColor: Colors.black),
+          BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Exchange"), backgroundColor: Colors.black),
+          BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Margin"), backgroundColor: Colors.black),
         ],
         fixedColor: null, //todo it's white, should be primary
         onTap: (int index) => _presenter.onTabSelected(index),
@@ -100,11 +96,42 @@ class WalletsListPageState extends State<WalletsListPage> {
 
   Widget getLoadingView() => Center(child: CircularProgressIndicator());
 
-  Widget getListView() => ListView.builder(
-        itemCount: _wallets.length,
-        itemBuilder: (BuildContext context, int index) =>
-            getWalletWidget(_wallets[index]),
-      );
+  Widget getListView() {
+    var wallets;
+    var sum;
+
+    switch (_selectedTab) {
+      case 0:
+        wallets = _viewModel.exchangeWallets;
+        sum = _viewModel.exchangeSum;
+        break;
+      case 1:
+        wallets = _viewModel.marginWallets;
+        sum = _viewModel.marginSum;
+        break;
+    }
+
+    return ListView.builder(
+      itemCount: wallets.length,
+      itemBuilder: (BuildContext context, int index) {
+        switch (index) {
+          case 0:
+            return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+              Text(
+                "USD",
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "${sum}",
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+              )
+            ]);
+          default:
+            return getWalletWidget(wallets[index]);
+        }
+      },
+    );
+  }
 
   Widget getErrorView() => GestureDetector(
         child: Center(
@@ -122,20 +149,16 @@ class WalletsListPageState extends State<WalletsListPage> {
             onTap: () => navigateTo(context, WalletDetailedPage()),
             child: new Container(
                 padding: new EdgeInsets.all(16.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        wallet.currency,
-                        style: TextStyle(
-                            fontSize: 18.0, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "${wallet.amount}",
-                        style: TextStyle(
-                            fontSize: 18.0, fontWeight: FontWeight.normal),
-                      )
-                    ]))),
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                  Text(
+                    wallet.currency,
+                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "${wallet.amount}",
+                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+                  )
+                ]))),
       );
 
   navigateTo(BuildContext context, Widget page) => Navigator.push(
