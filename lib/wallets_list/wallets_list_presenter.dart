@@ -44,8 +44,11 @@ class WalletsListPresenter {
   }
 
   Future onWalletsLoaded(wallets) async {
-    final exchangeWallets = wallets.where((it) => (it.type == WalletType.exchange)).toList();
-    final marginWallets = wallets.where((it) => (it.type == WalletType.margin)).toList();
+    final List<Wallet> exchangeWallets = wallets.where((it) => (it.type == WalletType.exchange)).toList();
+    final List<Wallet> marginWallets = wallets.where((it) => (it.type == WalletType.margin)).toList();
+
+//    sortWallets(exchangeWallets);
+//    sortWallets(marginWallets);
 
     print("calculate sum for exchange");
     final exchangeSum = await calculateSum(exchangeWallets);
@@ -55,6 +58,18 @@ class WalletsListPresenter {
     _viewModel = ViewModel(exchangeWallets, marginWallets, exchangeSum, marginSum);
 
     onTabSelected(WalletType.exchange.index);
+  }
+
+  void sortWallets(List<Wallet> exchangeWallets) {
+    exchangeWallets.sort((a, b){
+      if (a.currency == "USD") {
+        return 1;
+      } else  if (a.currency == "USD") {
+        return -1;
+      } else {
+        a.currency.compareTo(b.currency);
+      }
+    });
   }
 
   void navigateTo(BuildContext context, String pair) {
@@ -68,7 +83,7 @@ class WalletsListPresenter {
     _viewState.showData(tabIndex, _viewModel);
   }
 
-  Future<double> calculateSum(List<Wallet> wallets) async {
+  Future<String> calculateSum(List<Wallet> wallets) async {
     final tickers = await _interactor.getTickersForWallets(wallets);
 
     var sum = 0.0;
@@ -82,7 +97,7 @@ class WalletsListPresenter {
         }
       });
     }
-    return sum;
+    return sum.toStringAsFixed(2);
   }
 
   Wallet _findWallet(List<Wallet> wallets, String symbol) =>
@@ -94,8 +109,8 @@ class WalletsListPresenter {
 class ViewModel {
   List<Wallet> exchangeWallets;
   List<Wallet> marginWallets;
-  double exchangeSum;
-  double marginSum;
+  String exchangeSum;
+  String marginSum;
 
   ViewModel(this.exchangeWallets, this.marginWallets, this.exchangeSum, this.marginSum);
 }

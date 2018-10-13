@@ -97,8 +97,8 @@ class WalletsListPageState extends State<WalletsListPage> {
   Widget getLoadingView() => Center(child: CircularProgressIndicator());
 
   Widget getListView() {
-    var wallets;
-    var sum;
+    List<Wallet> wallets;
+    String sum;
 
     switch (_selectedTab) {
       case 0:
@@ -116,21 +116,27 @@ class WalletsListPageState extends State<WalletsListPage> {
       itemBuilder: (BuildContext context, int index) {
         switch (index) {
           case 0:
-            return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-              Text(
-                "USD",
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "${sum}",
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-              )
-            ]);
+            return summaryItem(sum);
           default:
             return getWalletWidget(wallets[index]);
         }
       },
     );
+  }
+
+  Widget summaryItem(String sum) {
+    return new Container(
+        padding: new EdgeInsets.all(16.0),
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+            Text(
+              "Total sum, USD",
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "${sum}",
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+            )
+          ]));
   }
 
   Widget getErrorView() => GestureDetector(
