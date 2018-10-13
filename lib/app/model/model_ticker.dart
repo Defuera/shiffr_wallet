@@ -1,3 +1,5 @@
+import 'package:shiffr_wallet/app/model/conversion_utils.dart';
+
 class Ticker {
   final String symbol;
   final double bid;
@@ -15,20 +17,22 @@ class Ticker {
       this.volume, this.high, this.low});
 
 
-  factory Ticker.fromJson(dynamic json) =>
-      Ticker(
+  factory Ticker.fromJson(dynamic json) {
+    print(json);
+      return Ticker(
           symbol: json[0],
-          bid: json[1],
-          bidSize: json[2],
-          ask: json[3],
-          askSize: json[4],
-          dailyChange: json[5],
-          dailyChangePerc: json[6],
-          lastPrice: json[7],
-          volume: json[8],
-          high: json[9],
-          low: json[10]
+          bid: parseNullableDouble(json[1]),
+          bidSize: parseNullableDouble(json[2]),
+          ask: parseNullableDouble(json[3]),
+          askSize: parseNullableDouble(json[4]),
+          dailyChange: parseNullableDouble(json[5]),
+          dailyChangePerc: parseNullableDouble(json[6]),
+          lastPrice: parseNullableDouble(json[7]),
+          volume: parseNullableDouble(json[8]),
+          high: parseNullableDouble(json[9]),
+          low: parseNullableDouble(json[10])
       );
+  }
 }
 
 class TickerList {

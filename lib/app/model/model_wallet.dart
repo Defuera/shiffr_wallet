@@ -1,3 +1,5 @@
+import 'package:shiffr_wallet/app/model/conversion_utils.dart';
+
 class Wallet {
   WalletType type; //":"deposit",
   String currency; //":"btc",
@@ -17,19 +19,10 @@ class Wallet {
       unsettledInterest: parseNullableDouble(jsonList[3]),
       available: parseNullableDouble(jsonList[4]));
 
-  static double parseNullableDouble(value) {
-    if (value == null) {
-      return null;
-    } else {
-      return value.toDouble();
-    }
-  }
-
   @override
   String toString() {
     return "[$type, $currency, $amount]";
   }
-
 }
 
 enum WalletType { exchange, margin, funding }

@@ -18,7 +18,8 @@ class BitfinexApiV2 {
 
   final baseUrl = "https://api.bitfinex.com";
   final pathWallets = "v2/auth/r/wallets";
-  final pathTicker = "/v2/tickers?symbols=";
+  final pathTicker = "v2/tickers?symbols=";
+  final pathOrdersByPair = "v2/auth/r/orders";
 
   Future<List<Wallet>> getWalletsToLogin(String key, String secret) async {
     var responseString = await _executePost(pathWallets, key: key, secret: secret);
@@ -36,7 +37,7 @@ class BitfinexApiV2 {
     return WalletList.fromJson(map).balances;
   }
 
-  Future<List<Ticker>> getTradingTickers(List<String> pairs) async {
+  Future<List<Ticker>> getTradingTickers(List<String> pairs) async { //todo do not need to be signed, since not authenticated endpoint, so stop loosing processing power
 //    print("getTradingTicker pair: $pair");
     var pathArgs = "";
     pairs.forEach((pair) {
@@ -47,6 +48,14 @@ class BitfinexApiV2 {
     final map = await json.decode(responseString);
 
     return TickerList.fromJson(map).tickers;
+  }
+
+  Future<List<Wallet>> getListOrders(String pair) async {
+    var responseString = await _executePost("$pathOrdersByPair/$pair");
+//    print("getWallets response: $responseString");
+    var map = await json.decode(responseString);
+
+    return WalletList.fromJson(map).balances;
   }
 
   //region helper methods
@@ -63,7 +72,11 @@ class BitfinexApiV2 {
       headers: _headers(key: key, secret: secret, path: path, nonce: _getNonce(), body: "{}"),
     );
 
-    return response.body;
+    if (isSuccess(response.statusCode)) {
+      return response.body;
+    } else {
+      throw ApiError(response.statusCode, response.body);
+    }
   }
 
   _executeGet(String path, {String key, String secret}) async {
@@ -78,14 +91,14 @@ class BitfinexApiV2 {
       headers: _headers(key: key, secret: secret, path: path, nonce: _getNonce(), body: "{}"),
     );
 
-    if (isSuccess(response)) {
+    if (isSuccess(response.statusCode)) {
       return response.body;
     } else {
-      throw ApiError(response.body);
+      throw ApiError(response.statusCode, response.body);
     }
   }
 
-  bool isSuccess(Response response) => true; //todo
+  bool isSuccess(int statusCode) => statusCode >= 200 && statusCode < 300;
 
   Map<String, String> _headers({String key, String secret, String path, int nonce, String body}) {
     return {

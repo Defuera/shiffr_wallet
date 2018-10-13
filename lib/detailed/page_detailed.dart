@@ -28,7 +28,7 @@ class DetailedPageState extends State<DetailedPage> {
   @override
   void initState() {
     super.initState();
-    _presenter = DetailedPresenter(this);
+    _presenter = DetailedPresenter(this, _pair);
     _presenter.start();
   }
 
@@ -110,7 +110,7 @@ class DetailedPageState extends State<DetailedPage> {
         child: Center(
           child: Text("Network error, try again later"),
         ),
-        onTap: () => _presenter.loadListPairs(),
+        onTap: () => _presenter.loadPairOrders(),
       );
 
   void showSnackbar(BuildContext context, String text) {

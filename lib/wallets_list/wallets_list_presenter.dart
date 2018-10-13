@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:shiffr_wallet/app/model/api_error.dart';
 import 'package:shiffr_wallet/app/model/model_wallet.dart';
 import 'package:shiffr_wallet/detailed/page_detailed.dart';
 import 'package:shiffr_wallet/wallets_list/interactor.dart';
@@ -33,8 +34,10 @@ class WalletsListPresenter {
     try {
       final wallets = await _interactor.getWallets();
       await onWalletsLoaded(wallets);
-
     } catch (socketException) {
+      if (socketException is ApiError) {
+        print(socketException.errorMessage);
+      }
       print("exception: ${socketException.toString()}");
       _viewState.showError();
     }
@@ -71,14 +74,13 @@ class WalletsListPresenter {
     var sum = 0.0;
     if (tickers != null) {
       tickers.forEach((ticker) {
-        if (ticker.lastPrice != null){
+        if (ticker.lastPrice != null) {
           sum += ticker.lastPrice;
         }
       });
     }
     return sum;
   }
-
 }
 
 class ViewModel {
@@ -88,5 +90,4 @@ class ViewModel {
   double marginSum;
 
   ViewModel(this.exchangeWallets, this.marginWallets, this.exchangeSum, this.marginSum);
-
 }

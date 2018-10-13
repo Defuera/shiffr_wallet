@@ -7,7 +7,7 @@ packages:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.31.1"
+    version: "0.32.6"
   args:
     dependency: transitive
     description:
@@ -22,13 +22,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
-  barback:
-    dependency: transitive
-    description:
-      name: barback
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.15.2+16"
   bignum:
     dependency: transitive
     description:
@@ -43,13 +36,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.7+3"
-  build_barback:
-    dependency: transitive
-    description:
-      name: build_barback
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.0+4"
   build_config:
     dependency: transitive
     description:
@@ -113,13 +99,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
-  code_transformers:
-    dependency: transitive
-    description:
-      name: code_transformers
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.1+5"
   collection:
     dependency: transitive
     description:
@@ -161,7 +140,7 @@ packages:
       name: dart_style
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.9+1"
+    version: "1.0.14"
   fixnum:
     dependency: transitive
     description:
@@ -187,7 +166,7 @@ packages:
       name: front_end
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0-alpha.9"
+    version: "0.1.4+2"
   glob:
     dependency: transitive
     description:
@@ -209,13 +188,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.13.3+3"
-  http:
-    dependency: transitive
-    description:
-      name: http
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.11.3+16"
   http_multi_server:
     dependency: transitive
     description:
@@ -237,34 +209,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.3"
-  isolate:
-    dependency: transitive
-    description:
-      name: isolate
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
   json_annotation:
     dependency: "direct main"
     description:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.4"
+    version: "0.2.9+1"
   json_serializable:
     dependency: "direct dev"
     description:
       name: json_serializable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.2"
+    version: "0.5.8+1"
   kernel:
     dependency: transitive
     description:
       name: kernel
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0-alpha.9"
+    version: "0.3.4+2"
   logging:
     dependency: transitive
     description:
@@ -300,13 +265,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
-  package_resolver:
-    dependency: transitive
-    description:
-      name: package_resolver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.4"
   path:
     dependency: transitive
     description:
@@ -348,7 +306,7 @@ packages:
       name: pointycastle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0-rc2"
+    version: "1.0.0-rc4"
   pool:
     dependency: transitive
     description:
@@ -363,13 +321,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.25.0"
-  reflectable:
-    dependency: transitive
-    description:
-      name: reflectable
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.2"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -396,13 +347,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.3+1"
-  source_maps:
-    dependency: transitive
-    description:
-      name: source_maps
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.7"
   source_span:
     dependency: transitive
     description:

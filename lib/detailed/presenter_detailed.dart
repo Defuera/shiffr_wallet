@@ -1,29 +1,29 @@
+import 'package:shiffr_wallet/app/model/api/bitfinex_api_v2.dart';
 import 'package:shiffr_wallet/detailed/page_detailed.dart';
 
 class DetailedPresenter {
-//  final _repository = BitfinexRepository();
-//
-  final DetailedPageState _pageState;
+  final _api = BitfinexApiV2();
 
-  DetailedPresenter(this._pageState);
+  final DetailedPageState _pageState;
+  final String _pair;
+
+  DetailedPresenter(this._pageState, this._pair);
 
   void start() {
-    loadListPairs();
+    loadPairOrders();
   }
 
-  void loadListPairs() async {
-//    _pageState.showLoading();
-//
-//    try {
-//      var data = await _repository.getSymbols();
-//      await new Future.delayed(
-//          const Duration(milliseconds: 400)); //todo remove, it's only for debug
-//
-//      print("loadListPairs: $data");
-//
+  void loadPairOrders() async {
+    _pageState.showLoading();
+
+    try {
+      var data = await _api.getListOrders(_pair);
+
+      print("loadListPairs: $data");
+
 //      _pageState.showData(data);
-//    } catch (SocketException) {
-//      _pageState.showError();
-//    }
+    } catch (SocketException) {
+      _pageState.showError();
+    }
   }
 }
