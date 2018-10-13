@@ -47,30 +47,29 @@ class WalletsListPresenter {
     final List<Wallet> exchangeWallets = wallets.where((it) => (it.type == WalletType.exchange)).toList();
     final List<Wallet> marginWallets = wallets.where((it) => (it.type == WalletType.margin)).toList();
 
-//    sortWallets(exchangeWallets);
-//    sortWallets(marginWallets);
+    _sortWallets(exchangeWallets);
+    _sortWallets(marginWallets);
 
     print("calculate sum for exchange");
-    final exchangeSum = await calculateSum(exchangeWallets);
+    final exchangeSum = await _calculateSum(exchangeWallets);
     print("calculate sum for margin");
-    final marginSum = await calculateSum(marginWallets);
+    final marginSum = await _calculateSum(marginWallets);
 
     _viewModel = ViewModel(exchangeWallets, marginWallets, exchangeSum, marginSum);
 
     onTabSelected(WalletType.exchange.index);
   }
 
-  void sortWallets(List<Wallet> exchangeWallets) {
-    exchangeWallets.sort((a, b){
+  void _sortWallets(List<Wallet> wallets) =>
+    wallets.sort((a, b) {
       if (a.currency == "USD") {
-        return 1;
-      } else  if (a.currency == "USD") {
         return -1;
+      } else if (b.currency == "USD") {
+        return 1;
       } else {
-        a.currency.compareTo(b.currency);
+        return a.currency.compareTo(b.currency);
       }
     });
-  }
 
   void navigateTo(BuildContext context, String pair) {
     Navigator.push(
@@ -83,13 +82,13 @@ class WalletsListPresenter {
     _viewState.showData(tabIndex, _viewModel);
   }
 
-  Future<String> calculateSum(List<Wallet> wallets) async {
+  Future<String> _calculateSum(List<Wallet> wallets) async {
     final tickers = await _interactor.getTickersForWallets(wallets);
 
     var sum = 0.0;
     if (tickers != null) {
       tickers.forEach((ticker) {
-        final wallet = _findWallet(wallets, ticker.symbol);
+        final wallet = _findWallet(wallets, ticker.symbol.substring(1, 4)); //todo are symbols always of length 3? Don't think so!
         if (ticker.lastPrice != null) {
           final value = ticker.lastPrice * wallet.amount;
           sum += value;
@@ -97,12 +96,15 @@ class WalletsListPresenter {
         }
       });
     }
+
+    final fiatWallet = _findWallet(wallets, "USD");
+    print("add usd amount ${fiatWallet.amount}");
+    sum += fiatWallet.amount;
     return sum.toStringAsFixed(2);
   }
 
-  Wallet _findWallet(List<Wallet> wallets, String symbol) =>
-      wallets.firstWhere((w) {
-        return symbol.contains("${w.currency}USD");
+  Wallet _findWallet(List<Wallet> wallets, String symbol) => wallets.firstWhere((w) {
+        return w.currency == symbol;
       });
 }
 

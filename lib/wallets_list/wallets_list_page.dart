@@ -16,6 +16,7 @@ class WalletsListPage extends StatefulWidget {
 }
 
 enum Status { LOADING, DATA, ERROR }
+final HEADERS_COUNT = 1;
 
 class WalletsListPageState extends State<WalletsListPage> {
   Status _status;
@@ -112,13 +113,13 @@ class WalletsListPageState extends State<WalletsListPage> {
     }
 
     return ListView.builder(
-      itemCount: wallets.length,
+      itemCount: wallets.length + HEADERS_COUNT,
       itemBuilder: (BuildContext context, int index) {
         switch (index) {
           case 0:
             return summaryItem(sum);
           default:
-            return getWalletWidget(wallets[index]);
+            return getWalletWidget(wallets[index - HEADERS_COUNT]);
         }
       },
     );
