@@ -68,19 +68,27 @@ class WalletsListPresenter {
     _viewState.showData(tabIndex, _viewModel);
   }
 
-  Future<double> calculateSum(wallets) async {
+  Future<double> calculateSum(List<Wallet> wallets) async {
     final tickers = await _interactor.getTickersForWallets(wallets);
 
     var sum = 0.0;
     if (tickers != null) {
       tickers.forEach((ticker) {
+        final wallet = _findWallet(wallets, ticker.symbol);
         if (ticker.lastPrice != null) {
-          sum += ticker.lastPrice;
+          final value = ticker.lastPrice * wallet.amount;
+          sum += value;
+          print("wallet ${wallet.currency} amount ${wallet.amount} price ${ticker.lastPrice} = $value");
         }
       });
     }
     return sum;
   }
+
+  Wallet _findWallet(List<Wallet> wallets, String symbol) =>
+      wallets.firstWhere((w) {
+        return symbol.contains("${w.currency}USD");
+      });
 }
 
 class ViewModel {

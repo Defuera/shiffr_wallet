@@ -16,10 +16,13 @@ import 'package:shiffr_wallet/app/preferences.dart';
 class BitfinexApiV2 {
   final _prefs = Preferences();
 
+  //authenticated endpoints
   final baseUrl = "https://api.bitfinex.com";
   final pathWallets = "v2/auth/r/wallets";
-  final pathTicker = "v2/tickers?symbols=";
   final pathOrdersByPair = "v2/auth/r/orders";
+
+  //not auth endpoints
+  final pathTicker = "v2/tickers?symbols=";
 
   Future<List<Wallet>> getWalletsToLogin(String key, String secret) async {
     var responseString = await _executePost(pathWallets, key: key, secret: secret);
@@ -44,7 +47,7 @@ class BitfinexApiV2 {
       pathArgs += "t$pair,";
     });
     final responseString = await _executeGet("$pathTicker$pathArgs");
-    print("getTradingTicker response: $responseString");
+//    print("getTradingTicker response: $responseString");
     final map = await json.decode(responseString);
 
     return TickerList.fromJson(map).tickers;
