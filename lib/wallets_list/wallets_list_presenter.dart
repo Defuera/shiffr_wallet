@@ -71,12 +71,12 @@ class WalletsListPresenter {
       }
     });
 
-  void navigateTo(BuildContext context, String pair) {
-    Navigator.push(
-      context,
-      new MaterialPageRoute(builder: (context) => DetailedPage(pair)),
-    );
-  }
+//  void navigateTo(BuildContext context, String pair) {
+//    Navigator.push(
+//      context,
+//      new MaterialPageRoute(builder: (context) => DetailedPage(pair)),
+//    );
+//  }
 
   onTabSelected(int tabIndex) {
     _viewState.showData(tabIndex, _viewModel);

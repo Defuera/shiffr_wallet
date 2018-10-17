@@ -9,26 +9,27 @@ class SplashPresenter {
   final _preferences = Preferences();
 
   void start(BuildContext context) {
-    navigate(context);
+    _navigate(context);
   }
 
-  void navigate(BuildContext context) async {
-    var loggedIn = await isLoggedIn();
+  void _navigate(BuildContext context) async {
+    var loggedIn = await _isLoggedIn();
     await Future.delayed(Duration(milliseconds: 400));
+//    Navigator.pop(context); //todo remove splash screen
 
     if (loggedIn) {
-      navigateTo(context, WalletsListPage());
+      _navigateTo(context, WalletsListPage());
     } else {
-      navigateTo(context, LoginPage());
+      _navigateTo(context, LoginPage());
     }
   }
 
-  navigateTo(BuildContext context, Widget page) => Navigator.push(
+  _navigateTo(BuildContext context, Widget page) => Navigator.push(
         context,
         new MaterialPageRoute(builder: (context) => page),
       );
 
-  Future<bool> isLoggedIn() async {
+  Future<bool> _isLoggedIn() async {
     var credentials = await _preferences.getCredentials();
     final loggedIn = credentials != null;
     return loggedIn;

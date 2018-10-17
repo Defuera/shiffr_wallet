@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:shiffr_wallet/app/model/model_order.dart';
 import 'package:shiffr_wallet/app/model/model_wallet.dart';
+import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_presenter.dart';
+import 'package:shiffr_wallet/wallets_list/wallet_widget.dart';
 
 class WalletDetailedPage extends StatefulWidget {
   final Wallet _wallet;
 
-  WalletDetailedPage([this._wallet]);
+  WalletDetailedPage(this._wallet);
 
   @override
   WalletDetailedPageState createState() {
@@ -15,11 +18,12 @@ class WalletDetailedPage extends StatefulWidget {
 enum Status { LOADING, DATA, ERROR }
 
 class WalletDetailedPageState extends State<WalletDetailedPage> {
-//  Status _status;
+  Status _status;
 //
-//  int _selectedTab;
+  List<Order> _orders;
   final Wallet _wallet;
-//  WalletDetailedPresenter _presenter;
+  WalletDetailedPresenter _presenter;
+
 //
   WalletDetailedPageState(this._wallet);
 
@@ -27,83 +31,95 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
   void initState() {
     super.initState();
 
-//    _presenter = WalletDetailedPresenter(this, _wallet);
-//    _presenter.start();
+    _presenter = WalletDetailedPresenter(this, _wallet);
+    _presenter.start();
   }
 
   //region state manipulation
 
   void showLoading() {
-//    setState(() {
-//      _status = Status.LOADING;
-//    });
+    setState(() {
+      _status = Status.LOADING;
+    });
   }
 
-//  void showData(int tabIndex, List<Wallet> wallets) {
-//    setState(() {
-//      _selectedTab = tabIndex;
-//      _wallets = wallets;
-//      _status = Status.DATA;
-//    });
-//  }
+  void showData(List<Order> orders) {
+    setState(() {
+      _orders = orders;
+      _status = Status.DATA;
+    });
+  }
 
   void showError() {
-//    setState(() {
-//      _status = Status.ERROR;
-//    });
+    setState(() {
+      _status = Status.ERROR;
+    });
   }
 
   //endregion
 
   @override
   Widget build(BuildContext context) {
-    var widget;
+    Widget widget = _createLoadingView();
 
-//    switch (_status) {
-//      case Status.LOADING:
-//        widget = getLoadingView();
-//        break;
-//      case Status.DATA:
-////        widget = getListView();
-//        break;
-//      case Status.ERROR:
-//        widget = getErrorView();
-//        break;
-//    }
+    switch (_status) {
+      case Status.LOADING:
+        widget = _createLoadingView();
+        break;
+      case Status.DATA:
+        widget = _createListOrders(_orders);
+        break;
+      case Status.ERROR:
+        widget = _createErrorView();
+        break;
+    }
 
     return Scaffold(
-      appBar: AppBar(
-        primary: true,
-        title: Text("WalletDetailed"),
-      ),
-
-    );
+        appBar: AppBar(
+          primary: true,
+          title: Text("WalletDetailed"),
+        ),
+        body: Column(
+          children: <Widget>[
+            WalletWidget(_wallet),
+            widget,
+          ],
+        ));
   }
 
-  Widget getLoadingView() => Center(child: CircularProgressIndicator());
+  Widget _createLoadingView() => Center(child: CircularProgressIndicator());
 
-//  Widget getListView() => ListView.builder(
-//    itemCount: _wallets.length,
-//    itemBuilder: (BuildContext context, int index) => getPairListItem(context, index),
-//  );
-//
-//  GestureDetector getPairListItem(BuildContext context, int index) {
-//    return GestureDetector(
-//        child: InkWell(
-//          onTap: () => _presenter.navigateTo(context, _data[index]),
-//          child: new Container(
-//            padding: new EdgeInsets.all(16.0),
-//            child: getWalletWidget(_wallets[index]),
-//          ),
-//        ));
-//  }
-//
-  Widget getErrorView() => GestureDetector(
-    child: Center(
-      child: Text("Network error, try again later"),
-    ),
-//    onTap: () => _presenter.loadData(),
+  Widget _createListOrders(List<Order> orders) => ListView.builder(
+    itemCount: orders.length,
+    itemBuilder: (BuildContext context, int index) => _createOrderWidget(context, orders[index]),
   );
+
+  Widget _createOrderWidget(BuildContext context, Order order) {
+    return Container(
+        padding: EdgeInsets.all(16.0),
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+          Text(
+            order.symbol,
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            "${order.amount}",
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+          ),
+          Text(
+            "${order.price}",
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+          )
+        ]));
+  }
+//
+  Widget _createErrorView() => GestureDetector(
+        child: Center(
+          child: Text("Network error, try again later"),
+        ),
+//    onTap: () => _presenter.loadData(),
+      );
+
 //
 //  void showSnackbar(BuildContext context, String text) {
 //    Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(text)));
@@ -120,10 +136,10 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
         )
       ]),
-      onTap: () => navigateTo(context, WalletDetailedPage()));
+      onTap: () => navigateTo(context, WalletDetailedPage(wallet)));
 
   navigateTo(BuildContext context, Widget page) => Navigator.push(
-    context,
-    new MaterialPageRoute(builder: (context) => page),
-  );
+        context,
+        new MaterialPageRoute(builder: (context) => page),
+      );
 }

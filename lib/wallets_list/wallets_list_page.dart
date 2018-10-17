@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/model/model_wallet.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_page.dart';
+import 'package:shiffr_wallet/wallets_list/wallet_widget.dart';
 
 import 'wallets_list_presenter.dart';
 
@@ -153,19 +154,9 @@ class WalletsListPageState extends State<WalletsListPage> {
 
   getWalletWidget(Wallet wallet) => GestureDetector(
         child: InkWell(
-            onTap: () => navigateTo(context, WalletDetailedPage()),
-            child: new Container(
-                padding: new EdgeInsets.all(16.0),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-                  Text(
-                    wallet.currency,
-                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "${wallet.amount}",
-                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-                  )
-                ]))),
+            onTap: () => navigateTo(context, WalletDetailedPage(wallet)),
+            child: WalletWidget(wallet)
+        ),
       );
 
   navigateTo(BuildContext context, Widget page) => Navigator.push(

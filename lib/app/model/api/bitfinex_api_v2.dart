@@ -9,6 +9,7 @@ import 'package:pointycastle/export.dart';
 import 'package:pointycastle/macs/hmac.dart';
 import 'package:pointycastle/pointycastle.dart';
 import 'package:shiffr_wallet/app/model/api_error.dart';
+import 'package:shiffr_wallet/app/model/model_order.dart';
 import 'package:shiffr_wallet/app/model/model_ticker.dart';
 import 'package:shiffr_wallet/app/model/model_wallet.dart';
 import 'package:shiffr_wallet/app/preferences.dart';
@@ -40,7 +41,8 @@ class BitfinexApiV2 {
     return WalletList.fromJson(map).balances;
   }
 
-  Future<List<Ticker>> getTradingTickers(List<String> pairs) async { //todo do not need to be signed, since not authenticated endpoint, so stop loosing processing power
+  Future<List<Ticker>> getTradingTickers(List<String> pairs) async {
+    //todo do not need to be signed, since not authenticated endpoint, so stop loosing processing power
 //    print("getTradingTicker pair: $pair");
     var pathArgs = "";
     pairs.forEach((pair) {
@@ -53,12 +55,12 @@ class BitfinexApiV2 {
     return TickerList.fromJson(map).tickers;
   }
 
-  Future<List<Wallet>> getListOrders(String pair) async {
-    var responseString = await _executePost("$pathOrdersByPair/$pair");
+  Future<List<Order>> getTradingListOrders(String symbol, String fiat) async {
+    var responseString = await _executePost("$pathOrdersByPair/t$symbol$fiat/hist");
 //    print("getWallets response: $responseString");
     var map = await json.decode(responseString);
 
-    return WalletList.fromJson(map).balances;
+    return OrderList.fromJson(map).orders;
   }
 
   //region helper methods
@@ -75,10 +77,13 @@ class BitfinexApiV2 {
       headers: _headers(key: key, secret: secret, path: path, nonce: _getNonce(), body: "{}"),
     );
 
-    if (isSuccess(response.statusCode)) {
+    var statusCode = response.statusCode;
+    if (isSuccess(statusCode)) {
+      print("success loading orders: ${response.body}");
       return response.body;
     } else {
-      throw ApiError(response.statusCode, response.body);
+      print("error loading orders: $statusCode  ${response.body}");
+      throw ApiError(statusCode, response.body);
     }
   }
 

@@ -37,7 +37,9 @@ class OverviewPresenter {
     Navigator.push(
       context,
       new MaterialPageRoute(
-          builder: (context) => DetailedPage(pair)),
+          builder: (context) {
+//            DetailedPage(pair);
+          }),
     );
   }
 }

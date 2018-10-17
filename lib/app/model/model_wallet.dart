@@ -1,11 +1,11 @@
 import 'package:shiffr_wallet/app/model/conversion_utils.dart';
 
 class Wallet {
-  WalletType type; //":"deposit",
-  String currency; //":"btc",
-  double amount; //":"0.0",
-  double unsettledInterest; //":"0.0",
-  double available; //":"0.0"
+  final WalletType type; //":"deposit",
+  final String currency; //":"btc",
+  final double amount; //":"0.0",
+  final double unsettledInterest; //":"0.0",
+  final double available; //":"0.0"
 
   Wallet({this.type, this.currency, this.amount, this.unsettledInterest, this.available});
 
