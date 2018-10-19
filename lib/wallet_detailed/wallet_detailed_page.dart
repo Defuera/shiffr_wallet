@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/model/model_order.dart';
 import 'package:shiffr_wallet/app/model/model_wallet.dart';
+import 'package:shiffr_wallet/app/navigation_helper.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_presenter.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_widget.dart';
 
@@ -19,6 +20,7 @@ enum Status { LOADING, DATA, ERROR }
 
 class WalletDetailedPageState extends State<WalletDetailedPage> {
   Status _status;
+
 //
   List<Order> _orders;
   final Wallet _wallet;
@@ -90,9 +92,9 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
   Widget _createLoadingView() => Center(child: CircularProgressIndicator());
 
   Widget _createListOrders(List<Order> orders) => ListView.builder(
-    itemCount: orders.length,
-    itemBuilder: (BuildContext context, int index) => _createOrderWidget(context, orders[index]),
-  );
+        itemCount: orders.length,
+        itemBuilder: (BuildContext context, int index) => _createOrderWidget(context, orders[index]),
+      );
 
   Widget _createOrderWidget(BuildContext context, Order order) {
     return Container(
@@ -112,6 +114,7 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
           )
         ]));
   }
+
 //
   Widget _createErrorView() => GestureDetector(
         child: Center(
@@ -137,9 +140,4 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
         )
       ]),
       onTap: () => navigateTo(context, WalletDetailedPage(wallet)));
-
-  navigateTo(BuildContext context, Widget page) => Navigator.push(
-        context,
-        new MaterialPageRoute(builder: (context) => page),
-      );
 }

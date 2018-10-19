@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/model/model_wallet.dart';
+import 'package:shiffr_wallet/app/navigation_helper.dart';
+import 'package:shiffr_wallet/playground/PlaygroundPage.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_page.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_widget.dart';
 
@@ -11,9 +13,8 @@ class WalletsListPage extends StatefulWidget {
   WalletsListPage([this._wallets]);
 
   @override
-  WalletsListPageState createState() {
-    return WalletsListPageState(_wallets);
-  }
+  WalletsListPageState createState() => WalletsListPageState(_wallets);
+
 }
 
 enum Status { LOADING, DATA, ERROR }
@@ -82,6 +83,16 @@ class WalletsListPageState extends State<WalletsListPage> {
       appBar: AppBar(
         primary: true,
         title: Text("WalletsList"),
+        leading: Container(), //to remove arrow
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: GestureDetector(
+              child: Icon(Icons.games, color: Colors.white,),
+              onTap: () => navigateTo(context, PlaygroundPage()),
+            ),
+          )
+        ],
       ),
       body: widget,
       bottomNavigationBar: BottomNavigationBar(
@@ -159,8 +170,4 @@ class WalletsListPageState extends State<WalletsListPage> {
         ),
       );
 
-  navigateTo(BuildContext context, Widget page) => Navigator.push(
-        context,
-        new MaterialPageRoute(builder: (context) => page),
-      );
 }
