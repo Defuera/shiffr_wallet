@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/model/model_wallet.dart';
 import 'package:shiffr_wallet/app/navigation_helper.dart';
-import 'package:shiffr_wallet/playground/PlaygroundPage.dart';
+import 'package:shiffr_wallet/playground/playground_page.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_page.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_widget.dart';
 

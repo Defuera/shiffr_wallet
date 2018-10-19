@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/navigation_helper.dart';
-import 'package:shiffr_wallet/playground/ItemDetailedPage.dart';
+import 'package:shiffr_wallet/playground/item_detailed_page.dart';
 
 class PlaygroundPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => PlaygroundPageState();
+  State<StatefulWidget> createState() => _PlaygroundPageState();
 }
 
-class PlaygroundPageState extends State<PlaygroundPage> {
+class _PlaygroundPageState extends State<PlaygroundPage> {
   @override
   Widget build(BuildContext context) =>
       Scaffold(
