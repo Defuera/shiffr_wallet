@@ -25,17 +25,22 @@ class _ItemDetailedPageState extends State<ItemDetailedPage> {
       );
 
   _buildBody(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-        Container(
-            color: Colors.lightBlueAccent,
-            child: AspectRatio(
-                aspectRatio: 1.0 / 1.0,
-                child: Image.network(
-                  _imageUrl,
-                  fit: BoxFit.fitWidth,
-                ))),
+        Container(color: Colors.lightBlueAccent, child: _buildHero()),
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Text("And the name of this beautiful picture is unknown", style: TextStyle(fontSize: 22.0),),
+          child: Text(
+            "And the name of this beautiful picture is unknown",
+            style: TextStyle(fontSize: 22.0),
+          ),
         )
       ]);
+
+  Widget _buildHero() => Hero(
+      tag:  _imageUrl,
+      child: AspectRatio(
+          aspectRatio: 1.0 / 1.0,
+          child: Image.network(
+            _imageUrl,
+            fit: BoxFit.fitWidth,
+          )));
 }
