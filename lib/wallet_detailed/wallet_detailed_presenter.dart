@@ -23,9 +23,11 @@ class WalletDetailedPresenter {
 
       print("loadListPairs: $data");
 
-      _pageState.showData(data);
-    } catch (SocketException, stacktrace) {
-      print(stacktrace);
+      if (data != null) {
+        _pageState.showData(data);
+      }
+    } catch (exception) {
+      print(exception);
       _pageState.showError();
     }
   }

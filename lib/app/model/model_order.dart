@@ -1,40 +1,25 @@
 class Order {
-//  ID,ID	int64	Order ID
-//GID	int	Group ID
-//CID	int	Client Order ID
-//SYMBOL	string	Pair (tBTCUSD, …)
-//MTS_CREATE	int	Millisecond timestamp of creation
-//MTS_UPDATE	int	Millisecond timestamp of update
-//AMOUNT	float	Remaining amount.
-//AMOUNT_ORIG	float	Original amount, positive means buy, negative means sell.
-//TYPE	string	The type of the order: LIMIT, MARKET, STOP, TRAILING STOP, EXCHANGE MARKET, EXCHANGE LIMIT, EXCHANGE STOP, EXCHANGE TRAILING STOP, FOK, EXCHANGE FOK.
-//TYPE	string	Previous order type
-//FLAGS	int	Upcoming Params Object (stay tuned)
-//ORDER_STATUS	string	Order Status: ACTIVE, EXECUTED, PARTIALLY FILLED, CANCELED
-//PRICE	float	Price
-//PRICE_AVG	float	Average price
-//PRICE_TRAILING	float	The trailing price
-//PRICE_AUX_LIMIT	float	Auxiliary Limit price (for STOP LIMIT)
-//NOTIFY	int	1 if Notify flag is active, 0 if not
-//HIDDEN	int	1 if Hidden, 0 if not hidden
-//PLACED_ID	int	If another order caused this order to be placed (OCO) this will be that other order's ID
+  final int id; //0  ID
+  final int groupId; //1  GID
+  final int clientOrderId; //2  CID
+  final String symbol; //3 SYMBOL
+  final int creationTimestamp; //4  MTS_CREATE
+  final int updateTimestamp; //5  MTS_UPDATE
+  final double amount; //6  AMOUNT
+  final double amountOriginal; //7  AMOUNT_ORIG
 
-  final int id;
-  final int groupId;
-  final int clientOrderId;
-  final String symbol;
-  final int creationTimestamp;
-  final int updateTimestamp;
-  final double amount;
-  final double amountOriginal;
-  final String orderStatus;
-  final double price;
-  final double priceAverage;
-  final double priceTrailing;
-  final double priceAuxLimit;
-  final bool notify;
-  final bool hidden;
-  final int placeId;
+  /// The type of the order: LIMIT, MARKET, STOP, TRAILING STOP, EXCHANGE MARKET, EXCHANGE LIMIT, EXCHANGE STOP, EXCHANGE TRAILING STOP, FOK, EXCHANGE FOK.
+  final String type; //8  TYPE,
+
+  final String typePrev; //9  TYPE_PREV
+  final int flags; //12  FLAGS
+  final String orderStatus; //13  STATUS
+  final double price; //16  PRICE
+  final double priceAverage; //17  PRICE_AVG
+  final double priceTrailing; //18  PRICE_TRAILING
+  final double priceAuxLimit; //19  PRICE_AUX_LIMIT
+  final bool hidden; //23  HIDDEN
+  final int placeId; //24  PLACED_ID
 
   Order(
       {this.id,
@@ -45,50 +30,67 @@ class Order {
       this.updateTimestamp,
       this.amount,
       this.amountOriginal,
+      this.type,
+      this.typePrev,
+      this.flags,
       this.orderStatus,
       this.price,
       this.priceAverage,
       this.priceTrailing,
       this.priceAuxLimit,
-      this.notify,
       this.hidden,
       this.placeId});
 
-  factory Order.fromJsonArray(List<dynamic> jsonList) {
-    print(jsonList);
-    var order = Order(
-      id: jsonList[0],
-      groupId: jsonList[1],
-      clientOrderId: jsonList[2],
-      symbol: jsonList[3],
-      creationTimestamp: jsonList[4],
-      updateTimestamp: jsonList[5],
-      amount: jsonList[6],
-      amountOriginal: jsonList[7],
-      orderStatus: jsonList[8],
-      price: jsonList[9],
-      priceAverage: jsonList[10],
-      priceTrailing: jsonList[11],
-      priceAuxLimit: jsonList[12],
-      notify: jsonList[13],
-      hidden: jsonList[14],
-      placeId: jsonList[15],
-    );
-//    print(order);
-    return order;
+  factory Order.fromJsonArray(List<dynamic> jsonList) => Order(
+        id: _parseValue(jsonList, 0),
+        groupId: _parseValue(jsonList, 1),
+        clientOrderId: _parseValue(jsonList, 2),
+        symbol: _parseValue(jsonList, 3),
+        creationTimestamp: _parseValue(jsonList, 4),
+        updateTimestamp: _parseValue(jsonList, 5),
+        amount: _parseValue(jsonList, 6, converter: _toDouble),
+        amountOriginal: _parseValue(jsonList, 7, converter: _toDouble),
+        type: _parseValue(jsonList, 8),
+        typePrev: _parseValue(jsonList, 9),
+        flags: 0,
+        orderStatus: _parseValue(jsonList, 13),
+        price: _parseValue(jsonList, 16, converter: _toDouble),
+        priceAverage: _parseValue(jsonList, 17, converter: _toDouble),
+        priceTrailing: _parseValue(jsonList, 18, converter: _toDouble),
+        priceAuxLimit: _parseValue(jsonList, 19, converter: _toDouble),
+        hidden: _parseValue(jsonList, 23, converter: _intToBool),
+        placeId: _parseValue(jsonList, 24),
+      );
+
+  static _intToBool(int val) => val == 1;
+
+  static _toDouble(dynamic x) {
+    if (x == null) {
+      return null;
+    } else {
+      return x.toDouble();
+    }
   }
 
-//  @override
-//  String toString() {
-//    return "[$type, $currency, $amount]";
-//  }
+  static dynamic _parseValue(List<dynamic> jsonList, int index, {Function converter}) {
+      final value = jsonList[index];
+      if (converter != null) {
+        return converter(value);
+      } else {
+        return value;
+      }
+  }
+
+  @override
+  String toString() {
+    return "{$type, $symbol, $amount}";
+  }
 }
 
 class OrderList {
   List<Order> orders;
 
-  OrderList({this.orders});
+  OrderList(this.orders);
 
-  factory OrderList.fromJson(List<dynamic> json) =>
-      OrderList(orders: (json.map((i) => Order.fromJsonArray(i)).toList()));
+  factory OrderList.fromJson(List<dynamic> json) => OrderList((json.map((i) => Order.fromJsonArray(i)).toList()));
 }

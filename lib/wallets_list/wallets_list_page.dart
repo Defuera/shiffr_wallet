@@ -29,7 +29,7 @@ class WalletsListPageState extends State<WalletsListPage> {
   final List<Wallet> _wallets;
   WalletsListPresenter _presenter;
 
-  WalletsListPageState(this._wallets) {}
+  WalletsListPageState(this._wallets);
 
   @override
   void initState() {
@@ -146,7 +146,7 @@ class WalletsListPageState extends State<WalletsListPage> {
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             Text(
-              "${sum}",
+              sum,
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
             )
           ]));

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shiffr_wallet/detailed/page_detailed.dart';
 
 import 'overview_presenter.dart';
 

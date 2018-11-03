@@ -1,10 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:shiffr_wallet/app/model/api_error.dart';
 import 'package:shiffr_wallet/app/model/model_wallet.dart';
-import 'package:shiffr_wallet/detailed/page_detailed.dart';
 import 'package:shiffr_wallet/wallets_list/interactor.dart';
 import 'package:shiffr_wallet/wallets_list/wallets_list_page.dart';
 
@@ -60,16 +57,15 @@ class WalletsListPresenter {
     onTabSelected(WalletType.exchange.index);
   }
 
-  void _sortWallets(List<Wallet> wallets) =>
-    wallets.sort((a, b) {
-      if (a.currency == "USD") {
-        return -1;
-      } else if (b.currency == "USD") {
-        return 1;
-      } else {
-        return a.currency.compareTo(b.currency);
-      }
-    });
+  void _sortWallets(List<Wallet> wallets) => wallets.sort((a, b) {
+        if (a.currency == "USD") {
+          return -1;
+        } else if (b.currency == "USD") {
+          return 1;
+        } else {
+          return a.currency.compareTo(b.currency);
+        }
+      });
 
 //  void navigateTo(BuildContext context, String pair) {
 //    Navigator.push(

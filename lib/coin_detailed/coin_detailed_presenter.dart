@@ -1,5 +1,5 @@
 //import 'package:shiffr_wallet/app/model/api/bitfinex_api_v2.dart';
-//import 'package:shiffr_wallet/detailed/page_detailed.dart';
+//import 'package:shiffr_wallet/detailed/coin_detailed_page.dart';
 //
 //class DetailedPresenter {
 //  final _api = BitfinexApiV2();

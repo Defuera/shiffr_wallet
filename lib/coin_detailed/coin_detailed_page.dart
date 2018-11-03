@@ -1,6 +1,6 @@
 //import 'package:flutter/material.dart';
 //
-//import 'presenter_detailed.dart';
+//import 'coin_detailed_presenter.dart';
 //
 //class DetailedPage extends StatefulWidget {
 //  final String _pair;

@@ -21,12 +21,10 @@ enum Status { LOADING, DATA, ERROR }
 class WalletDetailedPageState extends State<WalletDetailedPage> {
   Status _status;
 
-//
   List<Order> _orders;
   final Wallet _wallet;
   WalletDetailedPresenter _presenter;
 
-//
   WalletDetailedPageState(this._wallet);
 
   @override
@@ -62,7 +60,7 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = _createLoadingView();
+    Widget widget;
 
     switch (_status) {
       case Status.LOADING:
@@ -74,6 +72,8 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
       case Status.ERROR:
         widget = _createErrorView();
         break;
+      default:
+        widget = _createLoadingView();
     }
 
     return Scaffold(
@@ -91,31 +91,30 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
 
   Widget _createLoadingView() => Center(child: CircularProgressIndicator());
 
-  Widget _createListOrders(List<Order> orders) => ListView.builder(
+  Widget _createListOrders(List<Order> orders) => Expanded(
+          child: ListView.builder(
         itemCount: orders.length,
         itemBuilder: (BuildContext context, int index) => _createOrderWidget(context, orders[index]),
-      );
+      ));
 
-  Widget _createOrderWidget(BuildContext context, Order order) {
-    return Container(
-        padding: EdgeInsets.all(16.0),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-          Text(
-            order.symbol,
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            "${order.amount}",
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-          ),
-          Text(
-            "${order.price}",
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-          )
-        ]));
-  }
+  Widget _createOrderWidget(BuildContext context, Order order) => Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.all(16.0),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+        Text(
+          order.symbol,
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          "${order.amount}",
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+        ),
+        Text(
+          "${order.price}",
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+        )
+      ]));
 
-//
   Widget _createErrorView() => GestureDetector(
         child: Center(
           child: Text("Network error, try again later"),
