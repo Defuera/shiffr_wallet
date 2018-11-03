@@ -19,13 +19,12 @@ class WalletDetailedPresenter {
 
     try {
       print("loadListPairs");
-      var data = await _api.getTradingListOrders(_wallet.currency, "USD");
+      var activeOrders = await _api.getActiveTradingListOrders(_wallet.currency, "USD");
+      var historicOrders = await _api.getTradingListOrdersHistory(_wallet.currency, "USD");
 
-      print("loadListPairs: $data");
+//      print("loadListPairs: $data");
 
-      if (data != null) {
-        _pageState.showData(data);
-      }
+      _pageState.showData(activeOrders, historicOrders);
     } catch (exception) {
       print(exception);
       _pageState.showError();

@@ -55,9 +55,15 @@ class BitfinexApiV2 {
     return TickerList.fromJson(map).tickers;
   }
 
-  Future<List<Order>> getTradingListOrders(String symbol, String fiat) async {
+  Future<List<Order>> getTradingListOrdersHistory(String symbol, String fiat) async {
     var responseString = await _executePost("$pathOrdersByPair/t$symbol$fiat/hist");
-//    print("getWallets response: $responseString");
+    var map = await json.decode(responseString);
+
+    return OrderList.fromJson(map).orders;
+  }
+
+  Future<List<Order>> getActiveTradingListOrders(String symbol, String fiat) async {
+    var responseString = await _executePost("$pathOrdersByPair/t$symbol$fiat");
     var map = await json.decode(responseString);
 
     return OrderList.fromJson(map).orders;

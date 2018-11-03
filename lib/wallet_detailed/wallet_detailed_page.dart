@@ -6,7 +6,7 @@ import 'package:shiffr_wallet/wallet_detailed/order_list_item_widget.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_presenter.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_widget.dart';
 
-const _ORDERS_HEADER_COUNT = 1;
+const _ORDERS_HEADER_COUNT = 2;
 
 class WalletDetailedPage extends StatefulWidget {
   final Wallet _wallet;
@@ -24,7 +24,8 @@ enum Status { LOADING, DATA, ERROR }
 class WalletDetailedPageState extends State<WalletDetailedPage> {
   Status _status;
 
-  List<Order> _orders;
+  List<Order> _activeOrders;
+  List<Order> _historicOrders;
   final Wallet _wallet;
   WalletDetailedPresenter _presenter;
 
@@ -46,9 +47,10 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
     });
   }
 
-  void showData(List<Order> orders) {
+  void showData(List<Order> activeOrders, List<Order> historicOrders) {
     setState(() {
-      _orders = orders;
+      _activeOrders = activeOrders;
+      _historicOrders = historicOrders;
       _status = Status.DATA;
     });
   }
@@ -70,7 +72,7 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
         widget = _createLoadingView();
         break;
       case Status.DATA:
-        widget = _createListOrders(_orders);
+        widget = _createListOrders();
         break;
       case Status.ERROR:
         widget = _createErrorView();
@@ -94,28 +96,47 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
 
   Widget _createLoadingView() => Center(child: CircularProgressIndicator());
 
-  Widget _createListOrders(List<Order> orders) => Expanded(
-          child: ListView.builder(
-        itemCount: orders.length + _ORDERS_HEADER_COUNT,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == 0) {
-            return _createTitleWidget("Fulfilled");
-          } else {
-            var itemIndex = index - _ORDERS_HEADER_COUNT;
-            final isLastItem = itemIndex == orders.length;
-            return OrderListItemWidget(orders[itemIndex], true);
-          }
-        },
-      ));
+  Widget _createListOrders() {
+    var itemsCount = _activeOrders.length + _historicOrders.length + _ORDERS_HEADER_COUNT;
+    return Expanded(
+        child: ListView.builder(
+          itemCount: itemsCount,
+          itemBuilder: (BuildContext context, int index) {
+            final itemsBeforeHistoricOrders = _activeOrders.length + _ORDERS_HEADER_COUNT;
+            final shouldShowHistoricOrder = index >= itemsBeforeHistoricOrders - 1;
 
-  Widget _createTitleWidget(String title) => Container(
-      padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-      child: Text(
-        title,
-        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-      ));
+            if (index == 0) {
+              return _createTitleWidget("Active");
+            } else if (index == _activeOrders.length + 1) {
+              return _createTitleWidget("Fulfilled");
+            } else {
 
-  Widget _createErrorView() => GestureDetector(
+              var order;
+              var itemIndex;
+              if (shouldShowHistoricOrder) {
+                itemIndex = index - itemsBeforeHistoricOrders;
+                order = _historicOrders[itemIndex];
+              } else {
+                itemIndex = index - 1;
+                order = _activeOrders[itemIndex];
+              }
+              final isLastItem = itemIndex == itemsCount - 1;
+              return OrderListItemWidget(order, !isLastItem);
+            }
+          },
+        ));
+  }
+
+  Widget _createTitleWidget(String title) =>
+      Container(
+          padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+          child: Text(
+            title,
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+          ));
+
+  Widget _createErrorView() =>
+      GestureDetector(
         child: Center(
           child: Text("Network error, try again later"),
         ),
@@ -127,16 +148,17 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
 //    Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(text)));
 //  }
 
-  getWalletWidget(Wallet wallet) => GestureDetector(
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-        Text(
-          wallet.currency,
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          "${wallet.amount}",
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-        )
-      ]),
-      onTap: () => navigateTo(context, WalletDetailedPage(wallet)));
+  getWalletWidget(Wallet wallet) =>
+      GestureDetector(
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+            Text(
+              wallet.currency,
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "${wallet.amount}",
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+            )
+          ]),
+          onTap: () => navigateTo(context, WalletDetailedPage(wallet)));
 }
