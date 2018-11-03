@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/app/model/model_order.dart';
 import 'package:shiffr_wallet/app/model/model_wallet.dart';
 import 'package:shiffr_wallet/app/navigation_helper.dart';
+import 'package:shiffr_wallet/wallet_detailed/order_list_item_widget.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_presenter.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_widget.dart';
+
+const _ORDERS_HEADER_COUNT = 1;
 
 class WalletDetailedPage extends StatefulWidget {
   final Wallet _wallet;
@@ -93,27 +96,24 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
 
   Widget _createListOrders(List<Order> orders) => Expanded(
           child: ListView.builder(
-        itemCount: orders.length,
-        itemBuilder: (BuildContext context, int index) => _createOrderWidget(context, orders[index]),
+        itemCount: orders.length + _ORDERS_HEADER_COUNT,
+        itemBuilder: (BuildContext context, int index) {
+          if (index == 0) {
+            return _createTitleWidget("Fulfilled");
+          } else {
+            var itemIndex = index - _ORDERS_HEADER_COUNT;
+            final isLastItem = itemIndex == orders.length;
+            return OrderListItemWidget(orders[itemIndex], true);
+          }
+        },
       ));
 
-  Widget _createOrderWidget(BuildContext context, Order order) => Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.all(16.0),
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-        Text(
-          order.symbol,
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          "${order.amount}",
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-        ),
-        Text(
-          "${order.price}",
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-        )
-      ]));
+  Widget _createTitleWidget(String title) => Container(
+      padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+      ));
 
   Widget _createErrorView() => GestureDetector(
         child: Center(
