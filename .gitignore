@@ -66,3 +66,5 @@ out/
 *.iml
 
 ios/
+
+pubspec.lock
