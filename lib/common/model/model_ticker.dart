@@ -1,4 +1,4 @@
-import 'package:shiffr_wallet/app/model/conversion_utils.dart';
+import 'package:shiffr_wallet/common/model/conversion_utils.dart';
 
 class Ticker {
   final String symbol;

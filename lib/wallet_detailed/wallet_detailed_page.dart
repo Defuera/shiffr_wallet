@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shiffr_wallet/app/model/model_order.dart';
-import 'package:shiffr_wallet/app/model/model_wallet.dart';
-import 'package:shiffr_wallet/app/navigation_helper.dart';
+import 'package:shiffr_wallet/common/model/model_order.dart';
+import 'package:shiffr_wallet/common/model/model_wallet.dart';
+import 'package:shiffr_wallet/common/navigation_helper.dart';
 import 'package:shiffr_wallet/wallet_detailed/order_list_item_widget.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_presenter.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_widget.dart';

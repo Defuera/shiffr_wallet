@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:shiffr_wallet/app/model/api/bitfinex_api_v2.dart';
-import 'package:shiffr_wallet/app/model/model_ticker.dart';
-import 'package:shiffr_wallet/app/model/model_wallet.dart';
+import 'package:shiffr_wallet/common/model/api/bitfinex_api_v2.dart';
+import 'package:shiffr_wallet/common/model/model_ticker.dart';
+import 'package:shiffr_wallet/common/model/model_wallet.dart';
 
 class Interactor {
   final _api = BitfinexApiV2();

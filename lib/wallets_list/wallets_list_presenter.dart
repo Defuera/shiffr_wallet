@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:shiffr_wallet/app/model/api_error.dart';
-import 'package:shiffr_wallet/app/model/model_wallet.dart';
+import 'package:shiffr_wallet/common/model/api_error.dart';
+import 'package:shiffr_wallet/common/model/model_wallet.dart';
 import 'package:shiffr_wallet/wallets_list/interactor.dart';
 import 'package:shiffr_wallet/wallets_list/wallets_list_page.dart';
 

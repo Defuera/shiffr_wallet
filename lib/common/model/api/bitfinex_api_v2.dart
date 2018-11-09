@@ -8,11 +8,11 @@ import 'package:pointycastle/digests/sha384.dart';
 import 'package:pointycastle/export.dart';
 import 'package:pointycastle/macs/hmac.dart';
 import 'package:pointycastle/pointycastle.dart';
-import 'package:shiffr_wallet/app/model/api_error.dart';
-import 'package:shiffr_wallet/app/model/model_order.dart';
-import 'package:shiffr_wallet/app/model/model_ticker.dart';
-import 'package:shiffr_wallet/app/model/model_wallet.dart';
-import 'package:shiffr_wallet/app/preferences.dart';
+import 'package:shiffr_wallet/common/model/api_error.dart';
+import 'package:shiffr_wallet/common/model/model_order.dart';
+import 'package:shiffr_wallet/common/model/model_ticker.dart';
+import 'package:shiffr_wallet/common/model/model_wallet.dart';
+import 'package:shiffr_wallet/common/preferences.dart';
 
 class BitfinexApiV2 {
   final _prefs = Preferences();

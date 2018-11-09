@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:shiffr_wallet/app/repository_bitfinex.dart';
+import 'package:shiffr_wallet/common/repository_bitfinex.dart';
 import 'package:shiffr_wallet/overview/overview_page.dart';
 
 class OverviewPresenter {

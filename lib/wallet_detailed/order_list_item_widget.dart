@@ -1,7 +1,7 @@
 //amount, creationTimestamp, type, price, orderStatus
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shiffr_wallet/app/model/model_order.dart';
+import 'package:shiffr_wallet/common/model/model_order.dart';
 
 class OrderListItemWidget extends StatelessWidget {
   final Order _order;
