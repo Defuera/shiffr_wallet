@@ -1,32 +1,53 @@
 import 'dart:async';
 
+import 'package:bloc/bloc.dart';
 import 'package:shiffr_wallet/common/model/api_error.dart';
 import 'package:shiffr_wallet/common/model/model_wallet.dart';
 import 'package:shiffr_wallet/wallets_list/interactor.dart';
-import 'package:shiffr_wallet/wallets_list/wallets_list_page.dart';
+import 'package:shiffr_wallet/wallets_list/wallet_list_state.dart';
 
-class WalletsListPresenter {
+class WalletsListBloc extends Bloc<dynamic, WalletListState> {
   final Interactor _interactor = Interactor();
 
-  final WalletsListPageState _viewState;
-  final List<Wallet> _preloadedWallets;
   ViewModel _viewModel;
 
-  WalletsListPresenter(this._viewState, this._preloadedWallets);
+  final List<Wallet> _preloadedWallets;
+
+  WalletsListBloc(this._preloadedWallets);
+
+  //region BLOC
+
+  @override
+  get initialState => WalletListState.loading();
+
+  @override
+  Stream<WalletListState> mapEventToState(WalletListState currentState, event) async* {
+    if (event is WalletListState) {
+      yield event;
+    } else {
+      throw Exception("unknown event");
+    }
+  }
+
+  //endregion
 
   void start() {
     if (_preloadedWallets != null) {
       onTabSelected(WalletType.exchange.index);
       onWalletsLoaded(_preloadedWallets);
     } else {
-      _viewState.showLoading();
+      dispatch(WalletListState.loading());
       loadData();
     }
   }
 
+  onTabSelected(int tabIndex) {
+    dispatch(WalletListState.dataLoaded(tabIndex, _viewModel));
+  }
+
   void loadData() async {
     print("WalletsListPresenter loadData");
-    _viewState.showLoading();
+    dispatch(WalletListState.loading());
 
     try {
       final wallets = await _interactor.getWallets();
@@ -36,7 +57,7 @@ class WalletsListPresenter {
         print(socketException.errorMessage);
       }
       print("exception: ${socketException.toString()}");
-      _viewState.showError();
+      dispatch(WalletListState.error());
     }
   }
 
@@ -58,25 +79,14 @@ class WalletsListPresenter {
   }
 
   void _sortWallets(List<Wallet> wallets) => wallets.sort((a, b) {
-        if (a.currency == "USD") {
-          return -1;
-        } else if (b.currency == "USD") {
-          return 1;
-        } else {
-          return a.currency.compareTo(b.currency);
-        }
-      });
-
-//  void navigateTo(BuildContext context, String pair) {
-//    Navigator.push(
-//      context,
-//      new MaterialPageRoute(builder: (context) => DetailedPage(pair)),
-//    );
-//  }
-
-  onTabSelected(int tabIndex) {
-    _viewState.showData(tabIndex, _viewModel);
-  }
+    if (a.currency == "USD") {
+      return -1;
+    } else if (b.currency == "USD") {
+      return 1;
+    } else {
+      return a.currency.compareTo(b.currency);
+    }
+  });
 
   Future<String> _calculateSum(List<Wallet> wallets) async {
     final tickers = await _interactor.getTickersForWallets(wallets);
@@ -100,8 +110,8 @@ class WalletsListPresenter {
   }
 
   Wallet _findWallet(List<Wallet> wallets, String symbol) => wallets.firstWhere((w) {
-        return w.currency == symbol;
-      });
+    return w.currency == symbol;
+  });
 }
 
 class ViewModel {

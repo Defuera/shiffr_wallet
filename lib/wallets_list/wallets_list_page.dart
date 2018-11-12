@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shiffr_wallet/common/model/model_wallet.dart';
 import 'package:shiffr_wallet/common/navigation_helper.dart';
 import 'package:shiffr_wallet/playground/playground_page.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_page.dart';
+import 'package:shiffr_wallet/wallets_list/wallet_list_state.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_widget.dart';
-
-import 'wallets_list_presenter.dart';
+import 'package:shiffr_wallet/wallets_list/wallets_list_presenter.dart';
 
 class WalletsListPage extends StatefulWidget {
   final List<Wallet> _wallets;
@@ -14,71 +15,59 @@ class WalletsListPage extends StatefulWidget {
 
   @override
   WalletsListPageState createState() => WalletsListPageState(_wallets);
-
 }
 
-enum Status { LOADING, DATA, ERROR }
-final HEADERS_COUNT = 1;
+
+const HEADERS_COUNT = 1;
 
 class WalletsListPageState extends State<WalletsListPage> {
-  Status _status;
-
-  int _selectedTab = 0;
-  ViewModel _viewModel;
+  WalletsListBloc _bloc;
 
   final List<Wallet> _wallets;
-  WalletsListPresenter _presenter;
 
   WalletsListPageState(this._wallets);
 
   @override
   void initState() {
     super.initState();
-
-    _presenter = WalletsListPresenter(this, _wallets);
-    _presenter.start();
+    _bloc = WalletsListBloc(_wallets);
+    _bloc.start();
   }
 
-  //region state manipulation
-
-  void showLoading() {
-    setState(() {
-      _status = Status.LOADING;
-    });
+  @override
+  void dispose() {
+    _bloc.dispose();
+    super.dispose();
   }
-
-  void showData(int tabIndex, ViewModel viewModel) {
-    setState(() {
-      _status = Status.DATA;
-      _selectedTab = tabIndex;
-      _viewModel = viewModel;
-    });
-  }
-
-  void showError() {
-    setState(() {
-      _status = Status.ERROR;
-    });
-  }
-
-  //endregion
 
   @override
   Widget build(BuildContext context) {
     var widget;
 
-    switch (_status) {
-      case Status.LOADING:
-        widget = getLoadingView();
-        break;
-      case Status.DATA:
-        widget = getListView();
-        break;
-      case Status.ERROR:
-        widget = getErrorView();
-        break;
-    }
+    return BlocBuilder<dynamic, WalletListState>(
+        bloc: _bloc,
+        builder: (
+          BuildContext context,
+          WalletListState loginState,
+        ) {
+          switch (loginState.status) {
+            case WalletListStatus.LOADING:
+              widget = getLoadingView();
+              break;
+            case WalletListStatus.DATA:
+              widget = getListView(loginState.tabIndex, loginState.viewModel);
+              break;
+            case WalletListStatus.ERROR:
+              widget = getErrorView();
+              break;
+          }
 
+          return buildPage(context, loginState.tabIndex, widget);
+        });
+
+  }
+
+  Scaffold buildPage(BuildContext context, int tabIndex, Widget widget) {
     return Scaffold(
       appBar: AppBar(
         primary: true,
@@ -88,7 +77,10 @@ class WalletsListPageState extends State<WalletsListPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: GestureDetector(
-              child: Icon(Icons.games, color: Colors.white,),
+              child: Icon(
+                Icons.games,
+                color: Colors.white,
+              ),
               onTap: () => navigateTo(context, PlaygroundPage()),
             ),
           )
@@ -101,26 +93,26 @@ class WalletsListPageState extends State<WalletsListPage> {
           BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Margin"), backgroundColor: Colors.black),
         ],
         fixedColor: null, //todo it's white, should be primary
-        onTap: (int index) => _presenter.onTabSelected(index),
-        currentIndex: _selectedTab,
+        onTap: (int index) => _bloc.onTabSelected(index),
+        currentIndex: tabIndex,
       ),
     );
   }
 
   Widget getLoadingView() => Center(child: CircularProgressIndicator());
 
-  Widget getListView() {
+  Widget getListView(tabIndex, viewModel) {
     List<Wallet> wallets;
     String sum;
 
-    switch (_selectedTab) {
+    switch (tabIndex) {
       case 0:
-        wallets = _viewModel.exchangeWallets;
-        sum = _viewModel.exchangeSum;
+        wallets = viewModel.exchangeWallets;
+        sum = viewModel.exchangeSum;
         break;
       case 1:
-        wallets = _viewModel.marginWallets;
-        sum = _viewModel.marginSum;
+        wallets = viewModel.marginWallets;
+        sum = viewModel.marginSum;
         break;
     }
 
@@ -141,22 +133,22 @@ class WalletsListPageState extends State<WalletsListPage> {
     return new Container(
         padding: new EdgeInsets.all(16.0),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-            Text(
-              "Total sum, USD",
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              sum,
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-            )
-          ]));
+          Text(
+            "Total sum, USD",
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            sum,
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+          )
+        ]));
   }
 
   Widget getErrorView() => GestureDetector(
         child: Center(
           child: Text("Network error, try again later"),
         ),
-        onTap: () => _presenter.loadData(),
+        onTap: () => _bloc.loadData(),
       );
 
   void showSnackbar(BuildContext context, String text) {
@@ -164,10 +156,6 @@ class WalletsListPageState extends State<WalletsListPage> {
   }
 
   getWalletWidget(Wallet wallet) => GestureDetector(
-        child: InkWell(
-            onTap: () => navigateTo(context, WalletDetailedPage(wallet)),
-            child: WalletWidget(wallet)
-        ),
+        child: InkWell(onTap: () => navigateTo(context, WalletDetailedPage(wallet)), child: WalletWidget(wallet)),
       );
-
 }
