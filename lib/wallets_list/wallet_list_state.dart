@@ -1,4 +1,4 @@
-import 'package:shiffr_wallet/wallets_list/wallets_list_presenter.dart';
+import 'package:shiffr_wallet/wallets_list/wallets_list_bloc.dart';
 
 enum WalletListStatus { LOADING, DATA, ERROR } //todo naming is poor
 

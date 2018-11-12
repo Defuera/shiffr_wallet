@@ -6,7 +6,7 @@ import 'package:shiffr_wallet/playground/playground_page.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_page.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_list_state.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_widget.dart';
-import 'package:shiffr_wallet/wallets_list/wallets_list_presenter.dart';
+import 'package:shiffr_wallet/wallets_list/wallets_list_bloc.dart';
 
 class WalletsListPage extends StatefulWidget {
   final List<Wallet> _wallets;
