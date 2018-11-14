@@ -55,23 +55,27 @@ class LoginPage extends StatelessWidget {
 //                      onPressed: () => _presenter.loadData()
 //                    ),
                   Padding(padding: EdgeInsets.only(top: 54.0)),
-                  FlatButton(
-//              onPressed: _presenter.proceedWithoutLogin(),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      //todo should be at the bottom of the screen
-                      child: RichText(
-                        text: TextSpan(
-                            text: "Proceed without loginnnn",
-                            style: TextStyle(
-                                color: Colors.black,
-                                decoration: TextDecoration.underline)),
-                      ),
-                    ),
-                    onPressed: () => navigateTo(context, OverviewPage()),
-                  ),
+                  _buildProceedWithoutLoginButton(context),
                 ]))),
       );
+
+  FlatButton _buildProceedWithoutLoginButton(BuildContext context) {
+    return FlatButton(
+//              onPressed: _presenter.proceedWithoutLogin(),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    //todo should be at the bottom of the screen
+                    child: RichText(
+                      text: TextSpan(
+                          text: "Proceed without login",
+                          style: TextStyle(
+                              color: Colors.black,
+                              decoration: TextDecoration.underline)),
+                    ),
+                  ),
+                  onPressed: () => navigateTo(context, OverviewPage()),
+                );
+  }
 
   void showWalletsPage(BuildContext context, List<Wallet> wallets) {
     navigateTo(context, WalletsListPage(wallets));

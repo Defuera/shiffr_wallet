@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/common/model/model_order.dart';
 import 'package:shiffr_wallet/common/model/model_wallet.dart';
 import 'package:shiffr_wallet/common/navigation_helper.dart';
+import 'package:shiffr_wallet/order/order_page.dart';
 import 'package:shiffr_wallet/wallet_detailed/order_list_item_widget.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_presenter.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_widget.dart';
@@ -89,6 +90,7 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
         body: Column(
           children: <Widget>[
             WalletWidget(_wallet),
+            _buildButtonsPanel(context),
             widget,
           ],
         ));
@@ -100,43 +102,40 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
     var itemsCount = _activeOrders.length + _historicOrders.length + _ORDERS_HEADER_COUNT;
     return Expanded(
         child: ListView.builder(
-          itemCount: itemsCount,
-          itemBuilder: (BuildContext context, int index) {
-            final itemsBeforeHistoricOrders = _activeOrders.length + _ORDERS_HEADER_COUNT;
-            final shouldShowHistoricOrder = index >= itemsBeforeHistoricOrders - 1;
+      itemCount: itemsCount,
+      itemBuilder: (BuildContext context, int index) {
+        final itemsBeforeHistoricOrders = _activeOrders.length + _ORDERS_HEADER_COUNT;
+        final shouldShowHistoricOrder = index >= itemsBeforeHistoricOrders - 1;
 
-            if (index == 0) {
-              return _createTitleWidget("Active");
-            } else if (index == _activeOrders.length + 1) {
-              return _createTitleWidget("Fulfilled");
-            } else {
-
-              var order;
-              var itemIndex;
-              if (shouldShowHistoricOrder) {
-                itemIndex = index - itemsBeforeHistoricOrders;
-                order = _historicOrders[itemIndex];
-              } else {
-                itemIndex = index - 1;
-                order = _activeOrders[itemIndex];
-              }
-              final isLastItem = itemIndex == itemsCount - 1;
-              return OrderListItemWidget(order, !isLastItem);
-            }
-          },
-        ));
+        if (index == 0) {
+          return _createTitleWidget("Active");
+        } else if (index == _activeOrders.length + 1) {
+          return _createTitleWidget("Fulfilled");
+        } else {
+          var order;
+          var itemIndex;
+          if (shouldShowHistoricOrder) {
+            itemIndex = index - itemsBeforeHistoricOrders;
+            order = _historicOrders[itemIndex];
+          } else {
+            itemIndex = index - 1;
+            order = _activeOrders[itemIndex];
+          }
+          final isLastItem = itemIndex == itemsCount - 1;
+          return OrderListItemWidget(order, !isLastItem);
+        }
+      },
+    ));
   }
 
-  Widget _createTitleWidget(String title) =>
-      Container(
-          padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-          child: Text(
-            title,
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-          ));
+  Widget _createTitleWidget(String title) => Container(
+      padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+      ));
 
-  Widget _createErrorView() =>
-      GestureDetector(
+  Widget _createErrorView() => GestureDetector(
         child: Center(
           child: Text("Network error, try again later"),
         ),
@@ -148,17 +147,37 @@ class WalletDetailedPageState extends State<WalletDetailedPage> {
 //    Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(text)));
 //  }
 
-  getWalletWidget(Wallet wallet) =>
-      GestureDetector(
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-            Text(
-              wallet.currency,
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              "${wallet.amount}",
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-            )
-          ]),
-          onTap: () => navigateTo(context, WalletDetailedPage(wallet)));
+  getWalletWidget(Wallet wallet) => GestureDetector(
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+        Text(
+          wallet.currency,
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          "${wallet.amount}",
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+        )
+      ]),
+      onTap: () => navigateTo(context, WalletDetailedPage(wallet)));
+
+  Widget _buildButtonsPanel(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        _buildOrderButton(context, "buy"),
+        _buildOrderButton(context, "sell"),
+      ],
+    );
+  }
+
+  Expanded _buildOrderButton(BuildContext context, String title) {
+    return Expanded(
+        child: RaisedButton(
+          child: Text(title),
+          onPressed: () {
+            navigateTo(context, OrderPage(_wallet.currency));
+          },
+        ),
+      );
+  }
 }
