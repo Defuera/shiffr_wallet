@@ -92,7 +92,6 @@ class WalletsListPageState extends State<WalletsListPage> {
           BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Exchange"), backgroundColor: Colors.black),
           BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Margin"), backgroundColor: Colors.black),
         ],
-        fixedColor: null, //todo it's white, should be primary
         onTap: (int index) => _bloc.onTabSelected(index),
         currentIndex: tabIndex,
       ),

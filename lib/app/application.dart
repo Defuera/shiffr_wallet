@@ -13,24 +13,40 @@ class Application extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primaryTextTheme: TextTheme(
-            body1:  TextStyle(color: Colors.white, fontSize: 17.0),
-            title: TextStyle(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.bold),
-            headline: TextStyle(color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.w600),
-            caption:  TextStyle(color: Colors.white, fontSize: 12.0),
-            subtitle:  TextStyle(color: Colors.white, fontSize: 15.0),
-
-          ),
-          accentColor: Color(0xFF3F88C5),
-          backgroundColor: Color(0xFF0F2646),
-          scaffoldBackgroundColor: Color(0xFF0F2646),
-          bottomAppBarColor: Color(0xFF0A1B32),
-          tabBarTheme: TabBarTheme(
-            labelColor: Colors.amber
-          )
-        ),
+            brightness: Brightness.dark,
+            primaryTextTheme: buildPrimaryTextTheme(),
+            textTheme: buildTextTheme(),
+            primaryColor: Color(0xFF3F88C5),
+            primaryColorBrightness: Brightness.dark,
+            primaryColorDark: Color(0xFF3F88C5),
+            accentColor: Color(0xFF3F88C5),
+            backgroundColor: Color(0xFF0F2646),
+            scaffoldBackgroundColor: Color(0xFF0F2646),
+            bottomAppBarColor: Color(0xFF0A1B32),
+            buttonColor: Color(0xFF163C71),
+            tabBarTheme: TabBarTheme(labelColor: Colors.amber)),
         home: SplashPage(),
       ),
+    );
+  }
+
+  TextTheme buildPrimaryTextTheme() {
+    return TextTheme(
+      body1: TextStyle(color: Colors.white, fontSize: 17.0),
+      title: TextStyle(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.bold),
+      headline: TextStyle(color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.w600),
+      caption: TextStyle(color: Colors.white, fontSize: 12.0),
+      subtitle: TextStyle(color: Colors.white, fontSize: 15.0),
+    );
+  }
+
+  TextTheme buildTextTheme() {
+    return TextTheme(
+      body1: TextStyle(color: Colors.white, fontSize: 17.0),
+      title: TextStyle(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.bold),
+      headline: TextStyle(color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.w600),
+      caption: TextStyle(color: Colors.white, fontSize: 12.0),
+      subtitle: TextStyle(color: Colors.white, fontSize: 15.0),
     );
   }
 }
