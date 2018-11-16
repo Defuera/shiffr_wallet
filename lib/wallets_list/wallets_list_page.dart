@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shiffr_wallet/common/model/model_wallet.dart';
 import 'package:shiffr_wallet/common/navigation_helper.dart';
+import 'package:shiffr_wallet/overview/overview_page.dart';
 import 'package:shiffr_wallet/playground/playground_page.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_page.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_list_state.dart';
-import 'package:shiffr_wallet/wallets_list/wallet_widget.dart';
+import 'package:shiffr_wallet/wallets_list/wallet_ticker.dart';
+import 'package:shiffr_wallet/wallets_list/wallet_ticker_widget.dart';
 import 'package:shiffr_wallet/wallets_list/wallets_list_bloc.dart';
 
 class WalletsListPage extends StatefulWidget {
@@ -14,18 +16,17 @@ class WalletsListPage extends StatefulWidget {
   WalletsListPage([this._wallets]);
 
   @override
-  WalletsListPageState createState() => WalletsListPageState(_wallets);
+  _WalletsListPageState createState() => _WalletsListPageState(_wallets);
 }
-
 
 const HEADERS_COUNT = 1;
 
-class WalletsListPageState extends State<WalletsListPage> {
+class _WalletsListPageState extends State<WalletsListPage> {
   WalletsListBloc _bloc;
 
   final List<Wallet> _wallets;
 
-  WalletsListPageState(this._wallets);
+  _WalletsListPageState(this._wallets);
 
   @override
   void initState() {
@@ -64,7 +65,6 @@ class WalletsListPageState extends State<WalletsListPage> {
 
           return buildPage(context, loginState.tabIndex, widget);
         });
-
   }
 
   Scaffold buildPage(BuildContext context, int tabIndex, Widget widget) {
@@ -89,10 +89,17 @@ class WalletsListPageState extends State<WalletsListPage> {
       body: widget,
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Exchange"), backgroundColor: Colors.black),
-          BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Margin"), backgroundColor: Colors.black),
+          BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Exchange")),
+          BottomNavigationBarItem(icon: Icon(Icons.atm), title: Text("Margin")),
+          BottomNavigationBarItem(icon: Icon(Icons.all_out), title: Text("Tickers")),
         ],
-        onTap: (int index) => _bloc.onTabSelected(index),
+        onTap: (int index) {
+          if (index < 2) {
+            _bloc.onTabSelected(index);
+          } else {
+            navigateTo(context, OverviewPage());
+          }
+        },
         currentIndex: tabIndex,
       ),
     );
@@ -101,16 +108,16 @@ class WalletsListPageState extends State<WalletsListPage> {
   Widget getLoadingView() => Center(child: CircularProgressIndicator());
 
   Widget getListView(tabIndex, viewModel) {
-    List<Wallet> wallets;
+    List<WalletTicker> wallets;
     String sum;
 
     switch (tabIndex) {
       case 0:
-        wallets = viewModel.exchangeWallets;
+        wallets = viewModel.exchangeWalletTickers;
         sum = viewModel.exchangeSum;
         break;
       case 1:
-        wallets = viewModel.marginWallets;
+        wallets = viewModel.marginWalletTickers;
         sum = viewModel.marginSum;
         break;
     }
@@ -122,7 +129,7 @@ class WalletsListPageState extends State<WalletsListPage> {
           case 0:
             return summaryItem(sum);
           default:
-            return getWalletWidget(wallets[index - HEADERS_COUNT]);
+            return getWalletTickerWidget(wallets[index - HEADERS_COUNT]);
         }
       },
     );
@@ -154,7 +161,10 @@ class WalletsListPageState extends State<WalletsListPage> {
     Scaffold.of(context).showSnackBar(new SnackBar(content: new Text(text)));
   }
 
-  getWalletWidget(Wallet wallet) => GestureDetector(
-        child: InkWell(onTap: () => navigateTo(context, WalletDetailedPage(wallet)), child: WalletWidget(wallet)),
+  getWalletTickerWidget(WalletTicker walletTicker) => GestureDetector(
+        child: InkWell(
+          child: WalletTickerWidget(walletTicker),
+          onTap: () => navigateTo(context, WalletDetailedPage(walletTicker.wallet)),
+        ),
       );
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shiffr_wallet/app/app_bloc.dart';
+import 'package:shiffr_wallet/app/colors.dart';
 import 'package:shiffr_wallet/splash/splash_page.dart';
 
 class Application extends StatelessWidget {
@@ -16,14 +17,13 @@ class Application extends StatelessWidget {
             brightness: Brightness.dark,
             primaryTextTheme: buildPrimaryTextTheme(),
             textTheme: buildTextTheme(),
-            primaryColor: Color(0xFF3F88C5),
+            primaryColor: Color(0xFF19375F),
             primaryColorBrightness: Brightness.dark,
-            primaryColorDark: Color(0xFF3F88C5),
+//            primaryColorDark: Color(0xFF3F88C5),
             accentColor: Color(0xFF3F88C5),
-            backgroundColor: Color(0xFF0F2646),
-            scaffoldBackgroundColor: Color(0xFF0F2646),
-            bottomAppBarColor: Color(0xFF0A1B32),
-            buttonColor: Color(0xFF163C71),
+            scaffoldBackgroundColor: ShiffrColors.bgBlue,
+//            bottomAppBarColor: Color(0xFF0A1B32),
+            buttonColor: ShiffrColors.btnBlue,
             tabBarTheme: TabBarTheme(labelColor: Colors.amber)),
         home: SplashPage(),
       ),
