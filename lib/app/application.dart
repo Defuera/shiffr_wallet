@@ -18,6 +18,7 @@ class Application extends StatelessWidget {
             primaryTextTheme: buildPrimaryTextTheme(),
             textTheme: buildTextTheme(),
             primaryColor: Color(0xFF19375F),
+            cardColor: ShiffrColors.cardBlue,
             primaryColorBrightness: Brightness.dark,
 //            primaryColorDark: Color(0xFF3F88C5),
             accentColor: Color(0xFF3F88C5),
