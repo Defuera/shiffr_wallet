@@ -34,7 +34,7 @@ class Application extends StatelessWidget {
   TextTheme buildPrimaryTextTheme() {
     return TextTheme(
       body1: TextStyle(color: Colors.white, fontSize: 17.0),
-      title: TextStyle(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.bold),
+      title: TextStyle(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w600),
       headline: TextStyle(color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.w600),
       caption: TextStyle(color: Colors.white, fontSize: 12.0),
       subtitle: TextStyle(color: Colors.white, fontSize: 15.0),

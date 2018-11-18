@@ -71,10 +71,10 @@ class WalletsListBloc extends Bloc<dynamic, WalletListState> {
       _sortWallets(exchangeWallets);
       _sortWallets(marginWallets);
 
-      final exchangeWalletTickers = await getTickers(exchangeWallets);
+      final exchangeWalletTickers = await _getTickers(exchangeWallets);
       final exchangeSum = _calculateSum(exchangeWalletTickers);
 
-      final marginWalletTickers = await getTickers(marginWallets);
+      final marginWalletTickers = await _getTickers(marginWallets);
       final marginSum = _calculateSum(marginWalletTickers);
 
       _viewModel = ViewModel(exchangeWalletTickers, marginWalletTickers, exchangeSum, marginSum);
@@ -96,28 +96,28 @@ class WalletsListBloc extends Bloc<dynamic, WalletListState> {
         }
       });
 
-  Future<List<WalletTicker>> getTickers(List<Wallet> wallets) async { //todo private, naming
+  Future<List<WalletTicker>> _getTickers(List<Wallet> wallets) async {
     final tickers = await _interactor.getTickersForWallets(wallets);
     final list = List<WalletTicker>();
 
-    tickers.forEach((ticker) {
-      var symbol = ticker.symbol.substring(1, 4); //todo are symbols always of length 3? Don't think so!
-      final wallet = _findWallet(wallets, symbol);
+    wallets.forEach((wallet) {
+      final symbol = wallet.currency;
+      final ticker = tickers.firstWhere((t) => t.symbol.contains(symbol), orElse: null); //todo can be a problem
       list.add(WalletTicker(symbol: symbol, wallet: wallet, ticker: ticker));
     });
     return list;
   }
 
-  String _calculateSum(List<WalletTicker> walletTicker) {
+  String _calculateSum(List<WalletTicker> walletTickers) {
     var sum = 0.0;
-    walletTicker.forEach((item) {
+    walletTickers.forEach((item) {
       final ticker = item.ticker;
       final wallet = item.wallet;
+      final isBaseCurrency = item.symbol == "USD"; //todo
 
-      var isBaseCurrency = item.symbol != "USD";
-      if (ticker.lastPrice != null && isBaseCurrency) {
+      if (ticker.lastPrice != null && !isBaseCurrency) {
         sum += ticker.lastPrice * wallet.amount;
-      } else if (isBaseCurrency){
+      } else if (isBaseCurrency) {
         sum += wallet.amount;
       }
     });

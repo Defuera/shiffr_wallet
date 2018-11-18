@@ -70,9 +70,9 @@ class _WalletsListPageState extends State<WalletsListPage> {
   Scaffold buildPage(BuildContext context, int tabIndex, Widget widget) {
     return Scaffold(
       appBar: AppBar(
-        primary: true,
-        title: Text("WalletsList"),
-        leading: Container(), //to remove arrow
+
+        automaticallyImplyLeading: false,
+        title: Text("WalletsList", style: Theme.of(context).textTheme.title,),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -163,7 +163,7 @@ class _WalletsListPageState extends State<WalletsListPage> {
 
   getWalletTickerWidget(WalletTicker walletTicker) => GestureDetector(
         child: InkWell(
-          child: WalletTickerWidget(walletTicker),
+          child: WalletWidget(walletTicker),
           onTap: () => navigateTo(context, WalletDetailedPage(walletTicker.wallet)),
         ),
       );
