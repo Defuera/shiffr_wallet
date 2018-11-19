@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:shiffr_wallet/common/navigation_helper.dart';
+import 'package:shiffr_wallet/tickers/tickers_page.dart';
 
 class ApplicationBloc extends Bloc {
   var _appState = _AppState();
@@ -24,6 +26,7 @@ class ApplicationBloc extends Bloc {
   logout(BuildContext context) {
 //    dispatch(_AppState(isLoggedIn: false));
     _appState = _AppState(isLoggedIn: false);
+    navigateAsNewRoot(context, TickersPage());
 //    Navigator.of(context).removeRoute(MaterialPageRoute(builder: (context) => ));
   }
 

@@ -41,13 +41,17 @@ class BitfinexApiV2 {
     return WalletList.fromJson(map).balances;
   }
 
-  Future<List<Ticker>> getTradingTickers(List<String> pairs) async {
-    //todo do not need to be signed, since not authenticated endpoint, so stop loosing processing power
+  //todo do not need to be signed, since not authenticated endpoint, so stop loosing processing power
+  Future<List<Ticker>> getTradingTickers({List<String> pairs}) async {
 //    print("getTradingTicker pair: $pair");
     var pathArgs = "";
-    pairs.forEach((pair) {
-      pathArgs += "t$pair,";
-    });
+    if (pairs != null) {
+      pairs.forEach((pair) {
+        pathArgs += "t$pair,";
+      });
+    } else {
+      pathArgs = "ALL";
+    }
     final responseString = await _executeGet("$pathTicker$pathArgs");
 //    print("getTradingTicker response: $responseString");
     final map = await json.decode(responseString);

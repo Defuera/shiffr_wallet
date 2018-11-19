@@ -19,8 +19,7 @@ class Interactor {
       }
     });
 
-    final tickers = await _api.getTradingTickers(pairs);
+    final tickers = await _api.getTradingTickers(pairs: pairs);
     return tickers;
   }
-
 }
