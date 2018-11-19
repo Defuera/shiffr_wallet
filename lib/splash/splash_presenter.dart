@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/common/navigation_helper.dart';
 import 'package:shiffr_wallet/common/preferences.dart';
 import 'package:shiffr_wallet/login/login_page.dart';
-import 'package:shiffr_wallet/playground/playground_page.dart';
 import 'package:shiffr_wallet/wallets_list/wallets_list_page.dart';
 
 class SplashPresenter {
@@ -16,15 +15,13 @@ class SplashPresenter {
 
   void _navigate(BuildContext context) async {
     var loggedIn = await _isLoggedIn();
-    await Future.delayed(Duration(milliseconds: 400));
-//    Navigator.pop(context); //todo remove splash screen
+    await Future.delayed(Duration(milliseconds: 200));
 
     if (loggedIn) {
-      navigateTo(context, WalletsListPage());
+      navigateAsNewRoot(context, WalletsListPage());
     } else {
       navigateTo(context, LoginPage());
     }
-//    navigateTo(context, PlaygroundPage());
   }
 
   Future<bool> _isLoggedIn() async {

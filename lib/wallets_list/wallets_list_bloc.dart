@@ -125,9 +125,6 @@ class WalletsListBloc extends Bloc<dynamic, WalletListState> {
     return sum.toStringAsFixed(2);
   }
 
-  Wallet _findWallet(List<Wallet> wallets, String symbol) => wallets.firstWhere((w) {
-        return w.currency == symbol;
-      });
 }
 
 class ViewModel {

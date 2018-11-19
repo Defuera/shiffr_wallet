@@ -12,21 +12,27 @@ class WalletWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ticker = _walletTicker.ticker;
+    final symbol = _walletTicker.symbol;
+
+    final currencyImage = AssetImage("assets/symbols/${symbol.toLowerCase()}.png"); //todo what if asset not found?
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: <Widget>[
-            Icon(
-              Icons.money_off,
-              size: 56.0,
+            Image(
+              image: currencyImage,
+              height: 56.0,
+              width: 56.0,
+              color: Colors.white,
+              colorBlendMode: BlendMode.srcOut,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
             ),
             Column(
               children: <Widget>[
-                SymbolText(_walletTicker.symbol),
+                SymbolText(symbol),
                 Text("") //todo how do I find currency name?
               ],
             ),

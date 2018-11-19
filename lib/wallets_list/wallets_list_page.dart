@@ -4,10 +4,11 @@ import 'package:shiffr_wallet/common/model/model_wallet.dart';
 import 'package:shiffr_wallet/common/navigation_helper.dart';
 import 'package:shiffr_wallet/overview/overview_page.dart';
 import 'package:shiffr_wallet/playground/playground_page.dart';
+import 'package:shiffr_wallet/profile/profile_page.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_page.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_list_state.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_ticker.dart';
-import 'package:shiffr_wallet/wallets_list/wallet_ticker_widget.dart';
+import 'package:shiffr_wallet/common/widgets/wallet_widget.dart';
 import 'package:shiffr_wallet/wallets_list/wallets_list_bloc.dart';
 
 class WalletsListPage extends StatefulWidget {
@@ -70,20 +71,11 @@ class _WalletsListPageState extends State<WalletsListPage> {
   Scaffold buildPage(BuildContext context, int tabIndex, Widget widget) {
     return Scaffold(
       appBar: AppBar(
-
         automaticallyImplyLeading: false,
         title: Text("WalletsList", style: Theme.of(context).textTheme.title,),
         actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: GestureDetector(
-              child: Icon(
-                Icons.games,
-                color: Colors.white,
-              ),
-              onTap: () => navigateTo(context, PlaygroundPage()),
-            ),
-          )
+          _buildPlaygroundMenuItem(context),
+          _buildProfileMenuItem(context),
         ],
       ),
       body: widget,
@@ -104,6 +96,33 @@ class _WalletsListPageState extends State<WalletsListPage> {
       ),
     );
   }
+
+  Widget _buildPlaygroundMenuItem(BuildContext context) =>
+     Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: GestureDetector(
+            child: Icon(
+              Icons.games,
+              color: Theme.of(context).accentColor,
+            ),
+            onTap: () => navigateTo(context, PlaygroundPage()),
+          ),
+        );
+
+  Widget _buildProfileMenuItem(BuildContext context) =>
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Semantics(//todo test
+          hint: "Profile",
+          child: GestureDetector(
+            child: Image(
+              image: AssetImage("assets/ic_anonymous.png"),
+              color: Theme.of(context).accentColor,
+            ),
+          onTap: () => navigateTo(context, ProfilePage()),
+          ),
+        ),
+      );
 
   Widget getLoadingView() => Center(child: CircularProgressIndicator());
 
