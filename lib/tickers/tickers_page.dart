@@ -27,6 +27,7 @@ class _TickersPageState extends ShiffrPageState<TickersPage, TickersState, Ticke
   getDataView(TickersState state) {
 
     return ListView.builder(
+      itemCount: state.viewModel.tickers.length,
       itemBuilder: (context, index){
         return TickerWidget(state.viewModel.tickers[index]);
       },

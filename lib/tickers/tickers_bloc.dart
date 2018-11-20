@@ -5,6 +5,8 @@ import 'package:shiffr_wallet/common/model/model_ticker.dart';
 import 'package:shiffr_wallet/common/utils/ticker_utils.dart';
 import 'package:shiffr_wallet/tickers/tickers_state.dart';
 
+const _MIN_MARKET_CAP_TO_DISPLAY = 50000;
+
 class TickersBloc extends ShiffrBloc<dynamic, TickersState> {
   final _api = BitfinexApiV2();
 
@@ -22,9 +24,11 @@ class TickersBloc extends ShiffrBloc<dynamic, TickersState> {
       final List<Ticker> filteredTickers = tickers
           .where((it) => it.symbol.startsWith("t"))
           .where((it) => retrieveBaseCurrency(it.symbol) == "USD") //todo inject base currency
+          .where((it) => it.marketCap() > _MIN_MARKET_CAP_TO_DISPLAY)
           .toList();
 
       filteredTickers.sort((a, b) => b.marketCap().compareTo(a.marketCap()));
+      print("size: ${filteredTickers.length}");
 
       dispatch(TickersState(status: ShiffrStatus.DATA, viewModel: TickersViewModel(filteredTickers)));
     } catch (exception, stacktrace) {
