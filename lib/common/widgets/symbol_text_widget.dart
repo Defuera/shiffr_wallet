@@ -8,7 +8,7 @@ class SymbolText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.subhead;
+    var style = Theme.of(context).textTheme.headline;
     if (size != 0) {
       style = style.copyWith(fontSize: 12.0);
     }

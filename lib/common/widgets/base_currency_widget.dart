@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const DECIMAL_PLACES = 2;
+
 class BaseCurrencyWidget extends StatelessWidget {
   final String symbol;
   final double amount;
@@ -9,22 +11,27 @@ class BaseCurrencyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
         createString(),
-        style: Theme.of(context).textTheme.subtitle,
+        style: Theme.of(context).textTheme.headline,
       );
 
   createString() {
+    final roundedAmount = amount
+        .toStringAsFixed(DECIMAL_PLACES)
+        .replaceAll(".00", "");
+
     switch (symbol) {
       case "USD":
-        return "\$$amount";
+        return "\$$roundedAmount";
       case "EUR":
-        return "€$amount";
+        return "€$roundedAmount";
       case "RUB":
-        return "₽$amount";
+        return "₽$roundedAmount";
       case "GBP":
-        return "£$amount";
+        return "£$roundedAmount";
       default:
-        return "$amount $symbol";
+        return "$roundedAmount $symbol";
     }
   }
+
 
 }

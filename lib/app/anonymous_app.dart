@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shiffr_wallet/app/app_bloc.dart';
 import 'package:shiffr_wallet/app/colors.dart';
 import 'package:shiffr_wallet/splash/splash_page.dart';
+import 'package:shiffr_wallet/tickers/tickers_page.dart';
 
-class Application extends StatelessWidget {
+class AnonymousApp extends StatelessWidget {
   final ApplicationBloc appBloc = ApplicationBloc();
 
   @override
@@ -26,28 +27,28 @@ class Application extends StatelessWidget {
 //            bottomAppBarColor: Color(0xFF0A1B32),
             buttonColor: ShiffrColors.btnBlue,
             tabBarTheme: TabBarTheme(labelColor: Colors.amber)),
-        home: SplashPage(),
+        home: TickersPage(),
       ),
     );
   }
 
   TextTheme buildPrimaryTextTheme() {
     return TextTheme(
-      body1: TextStyle(color: Colors.white, fontSize: 15.0),
+      body1: TextStyle(color: Colors.white, fontSize: 17.0),
       title: TextStyle(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w600),
       headline: TextStyle(color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.w600),
       caption: TextStyle(color: Colors.white, fontSize: 12.0),
-      subtitle: TextStyle(color: Colors.white, fontSize: 22.0),
+      subtitle: TextStyle(color: Colors.white, fontSize: 15.0),
     );
   }
 
   TextTheme buildTextTheme() {
     return TextTheme(
-      body1: TextStyle(color: Colors.white, fontSize: 15.0),
+      body1: TextStyle(color: Colors.white, fontSize: 17.0),
       title: TextStyle(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.bold),
       headline: TextStyle(color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.w600),
       caption: TextStyle(color: Colors.white, fontSize: 12.0),
-      subtitle: TextStyle(color: Colors.white, fontSize: 22.0),
+      subtitle: TextStyle(color: Colors.white, fontSize: 15.0),
     );
   }
 }
