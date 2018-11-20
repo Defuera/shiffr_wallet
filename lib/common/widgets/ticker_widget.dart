@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/common/model/model_ticker.dart';
+import 'package:shiffr_wallet/common/utils/ticker_utils.dart';
+import 'package:shiffr_wallet/common/widgets/base_currency_widget.dart';
 import 'package:shiffr_wallet/common/widgets/symbol_text_widget.dart';
 
 class TickerWidget extends StatelessWidget {
@@ -10,7 +12,8 @@ class TickerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ticker = _ticker;
-    final symbol = _ticker.symbol;
+    final symbol = retrieveQuoteCurrency(_ticker.symbol);
+    final base = retrieveBaseCurrency(_ticker.symbol);
 
     final currencyImage = AssetImage("assets/symbols/${symbol.toLowerCase()}.png"); //todo what if asset not found?
     return Card(
@@ -42,7 +45,7 @@ class TickerWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-//                  BaseCurrencyWidget("USD", _ticker.wallet.amount),
+                  BaseCurrencyWidget(base, _ticker.lastPrice),
                   Text(
                     "(${ticker.dailyChangePerc}%) ${ticker.dailyChange}",
                     style: Theme.of(context).textTheme.body1.copyWith(color: _getColor(ticker)),

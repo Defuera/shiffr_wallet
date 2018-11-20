@@ -26,7 +26,7 @@ class ApplicationBloc extends Bloc {
   logout(BuildContext context) {
 //    dispatch(_AppState(isLoggedIn: false));
     _appState = _AppState(isLoggedIn: false);
-    navigateAsNewRoot(context, TickersPage());
+    navigateTo(context, TickersPage());
 //    Navigator.of(context).removeRoute(MaterialPageRoute(builder: (context) => ));
   }
 

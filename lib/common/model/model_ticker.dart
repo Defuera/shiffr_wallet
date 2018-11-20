@@ -33,6 +33,8 @@ class Ticker {
           low: parseNullableDouble(json[10])
       );
   }
+
+  double marketCap() => volume * lastPrice;
 }
 
 class TickerList {
