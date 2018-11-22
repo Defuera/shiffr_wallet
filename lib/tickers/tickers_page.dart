@@ -12,7 +12,6 @@ class TickersPage extends StatefulWidget {
 }
 
 class _TickersPageState extends ShiffrPageState<TickersPage, TickersState, TickersBloc> {
-
   @override
   createBloc<B>(BuildContext context) {
     return TickersBloc();
@@ -25,12 +24,26 @@ class _TickersPageState extends ShiffrPageState<TickersPage, TickersState, Ticke
 
   @override
   getDataView(TickersState state) {
-
-    return ListView.builder(
-      itemCount: state.viewModel.tickers.length,
-      itemBuilder: (context, index){
-        return TickerWidget(state.viewModel.tickers[index]);
-      },
+    var tapBarPages = buildTapBarPages(state);
+    return DefaultTabController(
+      length: tapBarPages.length,
+      child: TabBarView(
+        children: tapBarPages,
+      ),
     );
+  }
+
+  List<Widget> buildTapBarPages(TickersState state) {
+    return <Widget>[
+      ListView.builder(
+        itemCount: state.viewModel.tickers.length,
+        itemBuilder: (context, index) {
+          return TickerWidget(state.viewModel.tickers[index]);
+        },
+      ),
+      Container(
+        color: Colors.purple,
+      )
+    ];
   }
 }
