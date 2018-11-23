@@ -7,7 +7,7 @@ import 'package:shiffr_wallet/common/arch/shiffr_state.dart';
 abstract class ShiffrPageState<
     T extends StatefulWidget,
     S extends ShiffrState,
-    B extends ShiffrBloc<dynamic, S>
+    B extends ShiffrBloc<S>
   > extends State<T> {
 
   ApplicationBloc appBloc;
@@ -37,7 +37,7 @@ abstract class ShiffrPageState<
               widget = getLoadingView();
               break;
             case ShiffrStatus.DATA:
-              widget = getDataView(state);
+              widget = getDataView(state.viewModel);
               break;
             case ShiffrStatus.ERROR:
               widget = getErrorView(); //todo
@@ -62,7 +62,7 @@ abstract class ShiffrPageState<
 
   String getTitle();
 
-  getDataView(S state);
+  getDataView(viewModel);
 
   Widget getLoadingView() => Center(child: CircularProgressIndicator());
 

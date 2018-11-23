@@ -38,6 +38,10 @@ class CurrencyIcon extends StatelessWidget {
         return "miota";
       case "DSH":
         return "dash";
+      case "BAB":
+        return "bch";
+      case "BSV":
+        return "bch";
       default:
         return _symbol.toLowerCase();
     }

@@ -7,7 +7,7 @@ import 'package:shiffr_wallet/tickers/tickers_state.dart';
 
 const _MIN_MARKET_CAP_TO_DISPLAY = 50000;
 
-class TickersBloc extends ShiffrBloc<dynamic, TickersState> {
+class TickersBloc extends ShiffrBloc<TickersState> {
   final _api = BitfinexApiV2();
 
   @override

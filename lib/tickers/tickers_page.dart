@@ -23,8 +23,8 @@ class _TickersPageState extends ShiffrPageState<TickersPage, TickersState, Ticke
   }
 
   @override
-  getDataView(TickersState state) {
-    var tapBarPages = buildTapBarPages(state);
+  getDataView(viewModel) {
+    var tapBarPages = buildTapBarPages(viewModel);
     return DefaultTabController(
       length: tapBarPages.length,
       child: TabBarView(
@@ -33,12 +33,12 @@ class _TickersPageState extends ShiffrPageState<TickersPage, TickersState, Ticke
     );
   }
 
-  List<Widget> buildTapBarPages(TickersState state) {
+  List<Widget> buildTapBarPages(TickersViewModel viewModel) {
     return <Widget>[
       ListView.builder(
-        itemCount: state.viewModel.tickers.length,
+        itemCount: viewModel.tickers.length,
         itemBuilder: (context, index) {
-          return TickerWidget(state.viewModel.tickers[index]);
+          return TickerWidget(viewModel.tickers[index]);
         },
       ),
       Container(

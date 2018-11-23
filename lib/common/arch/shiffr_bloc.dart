@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:shiffr_wallet/common/arch/shiffr_state.dart';
 
-abstract class ShiffrBloc<E, S extends ShiffrState> extends Bloc<E, S> {
+abstract class ShiffrBloc<S extends ShiffrState> extends Bloc<dynamic, S> {
   start();
 
   @override

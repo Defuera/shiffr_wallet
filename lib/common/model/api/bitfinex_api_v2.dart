@@ -41,6 +41,9 @@ class BitfinexApiV2 {
     return WalletList.fromJson(map).balances;
   }
 
+  Future<Ticker> getTradingTicker({String pair}) async =>
+      getTradingTickers(pairs: List.filled(1, pair)).then((list) => list.first);
+
   //todo do not need to be signed, since not authenticated endpoint, so stop loosing processing power
   Future<List<Ticker>> getTradingTickers({List<String> pairs}) async {
 //    print("getTradingTicker pair: $pair");
