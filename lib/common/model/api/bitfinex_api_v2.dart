@@ -9,6 +9,7 @@ import 'package:pointycastle/export.dart';
 import 'package:pointycastle/macs/hmac.dart';
 import 'package:pointycastle/pointycastle.dart';
 import 'package:shiffr_wallet/common/model/api_error.dart';
+import 'package:shiffr_wallet/common/model/model_candle.dart';
 import 'package:shiffr_wallet/common/model/model_order.dart';
 import 'package:shiffr_wallet/common/model/model_ticker.dart';
 import 'package:shiffr_wallet/common/model/model_wallet.dart';
@@ -24,6 +25,7 @@ class BitfinexApiV2 {
 
   //not auth endpoints
   final pathTicker = "v2/tickers?symbols=";
+  final pathCandles = "v2/candles/trade";
 
   Future<List<Wallet>> getWalletsToLogin(String key, String secret) async {
     var responseString = await _executePost(pathWallets, key: key, secret: secret);
@@ -42,7 +44,7 @@ class BitfinexApiV2 {
   }
 
   Future<Ticker> getTradingTicker({String pair}) async =>
-      getTradingTickers(pairs: List.filled(1, pair)).then((list) => list.first);
+      getTradingTickers(pairs: List.of([pair])).then((list) => list.first);
 
   //todo do not need to be signed, since not authenticated endpoint, so stop loosing processing power
   Future<List<Ticker>> getTradingTickers({List<String> pairs}) async {
@@ -60,6 +62,15 @@ class BitfinexApiV2 {
     final map = await json.decode(responseString);
 
     return TickerList.fromJson(map).tickers;
+  }
+
+  ///https://api.bitfinex.com/v2/candles/trade:TimeFrame:Symbol/Section
+  Future<List<Candle>> getTradingCandles(String pair, String timeFrame, {int limit: 30}) async {
+    final responseString = await _executeGet("$pathCandles:$timeFrame:t$pair/hist?$limit");
+//    print("getTradingTicker response: $responseString");
+    final map = await json.decode(responseString);
+
+    return CandleList.fromJson(map).candles;
   }
 
   Future<List<Order>> getTradingListOrdersHistory(String symbol, String fiat) async {

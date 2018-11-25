@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:shiffr_wallet/common/arch/shiffr_state.dart';
 
 abstract class ShiffrBloc<S extends ShiffrState> extends Bloc<dynamic, S> {
-  start();
+  void start();
 
   @override
   Stream<S> mapEventToState(state, event) async* {

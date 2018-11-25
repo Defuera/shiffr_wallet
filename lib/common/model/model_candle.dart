@@ -25,10 +25,10 @@ class Candle {
 }
 
 class CandleList {
-  List<Candle> tickers;
+  List<Candle> candles;
 
-  CandleList({this.tickers});
+  CandleList({this.candles});
 
   factory CandleList.fromJson(List<dynamic> json) =>
-      CandleList(tickers: (json.map((i) => Candle.fromJson(i)).toList()));
+      CandleList(candles: (json.map((i) => Candle.fromJson(i)).toList()));
 }

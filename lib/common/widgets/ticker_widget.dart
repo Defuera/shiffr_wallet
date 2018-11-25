@@ -34,6 +34,7 @@ class TickerWidget extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 8.0),
               ),
               Column(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   SymbolText(symbol),
                   Text("") //todo how do I find currency name?
@@ -42,6 +43,7 @@ class TickerWidget extends StatelessWidget {
               HorizontalPadding(8.0),
               Expanded(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[

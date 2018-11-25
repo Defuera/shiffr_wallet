@@ -3,11 +3,9 @@ import 'package:shiffr_wallet/common/model/model_ticker.dart';
 
 class TickersState extends ShiffrState<TickersViewModel> {
 
-  TickersState({
-    status: ShiffrStatus.LOADING,
-    viewModel,
-  }) : super(status: status, viewModel: viewModel);
-
+  TickersState.loading() : super(status: ShiffrStatus.LOADING);
+  TickersState.data(TickersViewModel viewModel) : super(status: ShiffrStatus.DATA, viewModel: viewModel);
+  TickersState.error() : super(status: ShiffrStatus.ERROR);
 }
 
 class TickersViewModel {

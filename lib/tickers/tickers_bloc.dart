@@ -1,5 +1,4 @@
 import 'package:shiffr_wallet/common/arch/shiffr_bloc.dart';
-import 'package:shiffr_wallet/common/arch/shiffr_state.dart';
 import 'package:shiffr_wallet/common/model/api/bitfinex_api_v2.dart';
 import 'package:shiffr_wallet/common/model/model_ticker.dart';
 import 'package:shiffr_wallet/common/utils/ticker_utils.dart';
@@ -11,7 +10,7 @@ class TickersBloc extends ShiffrBloc<TickersState> {
   final _api = BitfinexApiV2();
 
   @override
-  get initialState => TickersState(status: ShiffrStatus.LOADING);
+  get initialState => TickersState.loading();
 
   @override
   void start() {
@@ -30,11 +29,11 @@ class TickersBloc extends ShiffrBloc<TickersState> {
       filteredTickers.sort((a, b) => b.marketCap().compareTo(a.marketCap()));
       print("size: ${filteredTickers.length}");
 
-      dispatch(TickersState(status: ShiffrStatus.DATA, viewModel: TickersViewModel(filteredTickers)));
+      dispatch(TickersState.data(TickersViewModel(filteredTickers)));
     } catch (exception, stacktrace) {
       print("exception: ${exception.toString()}");
       print(stacktrace.toString());
-      dispatch(TickersState(status: ShiffrStatus.ERROR));
+      dispatch(TickersState.error());
     }
   }
 }

@@ -9,26 +9,29 @@ class CoinDetailedBloc extends ShiffrBloc<CoinDetailedState> {
   final BitfinexApiV2 _api;
   CoinDetailedInteractor _interactor;
 
+  var ticker;
+  var candles;
+
   CoinDetailedBloc(this._symbol, this._baseCurrency, this._api) {
     _interactor = CoinDetailedInteractor(_api);
   }
 
   @override
-  CoinDetailedState get initialState => CoinDetailedState.loading();
+  CoinDetailedState get initialState => CoinDetailedState.data();
 
   @override
   start() {
     loadTicker();
-//    loadCandles();
 //    loadWallet();
   }
 
   void loadTicker() async {
     try {
-      final ticker = await _interactor.getTicker(_symbol, _baseCurrency);
-      dispatch(CoinDetailedState.data(ticker));
+      ticker = await _interactor.getTicker(_symbol, _baseCurrency);
+      dispatch(CoinDetailedState.data(ticker: ticker));
     } catch (error) {
       print(error.toString());
     }
   }
+
 }
