@@ -15,5 +15,5 @@ class VerticalPadding extends StatelessWidget {
   VerticalPadding(this._value);
 
   @override
-  Widget build(BuildContext context) => Padding(padding: EdgeInsets.symmetric(horizontal: _value));
+  Widget build(BuildContext context) => Padding(padding: EdgeInsets.only(top: _value));
 }

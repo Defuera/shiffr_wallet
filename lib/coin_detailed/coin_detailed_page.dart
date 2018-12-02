@@ -7,6 +7,7 @@ import 'package:shiffr_wallet/common/utils/symbol_utils.dart';
 import 'package:shiffr_wallet/common/utils/ticker_utils.dart';
 import 'package:shiffr_wallet/common/widgets/base_currency_widget.dart';
 import 'package:shiffr_wallet/common/widgets/currency_chart.dart';
+import 'package:shiffr_wallet/common/widgets/paddings.dart';
 import 'package:shiffr_wallet/common/widgets/ticker_widget.dart';
 
 class CoinDetailedPage extends StatefulWidget {
@@ -44,6 +45,7 @@ class CoinDetailedPageState extends ShiffrPageState<CoinDetailedPage, CoinDetail
         children: <Widget>[
           BaseCurrencyWidget(base, ticker.lastPrice, textSize: 36.0),
           CurrencyChart(_symbol),
+          VerticalPadding(8.0),
           TickerWidget(ticker),
         ],
       ),
