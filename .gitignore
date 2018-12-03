@@ -14,10 +14,7 @@ packages
 
 # IntelliJ
 out/
-
-ios/
-android/
-
+v
 .DS_Store
 .atom/
 .idea
@@ -64,7 +61,5 @@ cmake-build-release/
 out/
 
 *.iml
-
-ios/
 
 pubspec.lock
