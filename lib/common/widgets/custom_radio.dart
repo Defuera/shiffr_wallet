@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shiffr_wallet/app/colors.dart';
 import 'package:shiffr_wallet/common/widgets/chart_mode.dart';
 
 class ChartRadio extends StatefulWidget {
@@ -19,12 +20,15 @@ class ChartRadio extends StatefulWidget {
 
 class ChartRadioState extends State<ChartRadio> {
   @override
-  Widget build(BuildContext context) => Container(
-    alignment: Alignment(0, 0),
-        width: 44.0,
-        height: 44.0,
-        color: Theme.of(context).accentColor,
-        child: Text(_getTitle()),
+  Widget build(BuildContext context) => GestureDetector(
+        child: Container(
+          alignment: Alignment(0, 0),
+          width: 44.0,
+          height: 44.0,
+          color: _getColor(),
+          child: Text(_getTitle()),
+        ),
+        onTap: () => widget.onChanged(widget.value),
       );
 
   String _getTitle() {
@@ -43,6 +47,14 @@ class ChartRadioState extends State<ChartRadio> {
         return "ALL";
       default:
         throw Exception("unkhown chart mode");
+    }
+  }
+
+  Color _getColor() {
+    if (widget.value == widget.groupValue) {
+      return Theme.of(context).accentColor;
+    } else {
+      return ShiffrColors.disabledColor;
     }
   }
 }
