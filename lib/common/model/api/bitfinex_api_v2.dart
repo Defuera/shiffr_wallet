@@ -1,13 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
-import 'package:convert/convert.dart';
 import 'package:http/http.dart';
-import 'package:pointycastle/digests/sha384.dart';
-import 'package:pointycastle/export.dart';
-import 'package:pointycastle/macs/hmac.dart';
-import 'package:pointycastle/pointycastle.dart';
+import 'package:shiffr_wallet/common/model/api/bitfinex_signer.dart';
 import 'package:shiffr_wallet/common/model/api_error.dart';
 import 'package:shiffr_wallet/common/model/model_candle.dart';
 import 'package:shiffr_wallet/common/model/model_order.dart';
@@ -28,16 +23,14 @@ class BitfinexApiV2 {
   final pathCandles = "v2/candles/trade";
 
   Future<List<Wallet>> getWalletsToLogin(String key, String secret) async {
-    var responseString = await _executePost(pathWallets, key: key, secret: secret);
-//    print("getWallets response: $responseString");
+    var responseString = await _authPost(pathWallets, key: key, secret: secret);
     var map = await json.decode(responseString);
 
     return WalletList.fromJson(map).balances;
   }
 
   Future<List<Wallet>> getWallets() async {
-    var responseString = await _executePost(pathWallets);
-//    print("getWallets response: $responseString");
+    var responseString = await _authPost(pathWallets);
     var map = await json.decode(responseString);
 
     return WalletList.fromJson(map).balances;
@@ -46,7 +39,6 @@ class BitfinexApiV2 {
   Future<Ticker> getTradingTicker({String pair}) async =>
       getTradingTickers(pairs: List.of([pair])).then((list) => list.first);
 
-  //todo do not need to be signed, since not authenticated endpoint, so stop loosing processing power
   Future<List<Ticker>> getTradingTickers({List<String> pairs}) async {
 //    print("getTradingTicker pair: $pair");
     var pathArgs = "";
@@ -57,8 +49,7 @@ class BitfinexApiV2 {
     } else {
       pathArgs = "ALL";
     }
-    final responseString = await _executeGet("$pathTicker$pathArgs");
-//    print("getTradingTicker response: $responseString");
+    final responseString = await _anonymousGet("$pathTicker$pathArgs");
     final map = await json.decode(responseString);
 
     return TickerList.fromJson(map).tickers;
@@ -66,43 +57,71 @@ class BitfinexApiV2 {
 
   ///https://api.bitfinex.com/v2/candles/trade:TimeFrame:Symbol/Section
   Future<List<Candle>> getTradingCandles(String pair, String timeFrame, {int limit: 30}) async {
-    final responseString = await _executeGet("$pathCandles:$timeFrame:t$pair/hist?$limit");
-//    print("getTradingTicker response: $responseString");
+    final responseString = await _anonymousGet("$pathCandles:$timeFrame:t$pair/hist?$limit");
     final map = await json.decode(responseString);
 
     return CandleList.fromJson(map).candles;
   }
 
   Future<List<Order>> getTradingListOrdersHistory(String symbol, String fiat) async {
-    var responseString = await _executePost("$pathOrdersByPair/t$symbol$fiat/hist");
+    var responseString = await _authPost("$pathOrdersByPair/t$symbol$fiat/hist");
     var map = await json.decode(responseString);
 
     return OrderList.fromJson(map).orders;
   }
 
   Future<List<Order>> getActiveTradingListOrders(String symbol, String fiat) async {
-    var responseString = await _executePost("$pathOrdersByPair/t$symbol$fiat");
+    var responseString = await _authPost("$pathOrdersByPair/t$symbol$fiat");
     var map = await json.decode(responseString);
 
     return OrderList.fromJson(map).orders;
   }
 
-  //region helper methods
+  //region shiffr http methods
 
-  _executePost(String path, {String key, String secret}) async {
+  _anonymousPost(String path, {String key, String secret}) async {
+    final response = await post("$baseUrl/$path");
+    return _handleResponse(response);
+  }
+
+  _anonymousGet(String path, {String key, String secret}) async {
+    final response = await get("$baseUrl/$path");
+    return _handleResponse(response);
+  }
+
+  _authPost(String path, {String key, String secret}) async {
+    final response = await post(
+      "$baseUrl/$path",
+      headers: await _prepareHeaders(key, secret, path),
+    );
+
+    return _handleResponse(response);
+  }
+
+  _authGet(String path, {String key, String secret}) async {
+    final response = await get(
+      "$baseUrl/$path",
+      headers: await _prepareHeaders(key, secret, path),
+    );
+
+    return _handleResponse(response);
+  }
+
+  //endregion
+
+  Future<Map<String, String>> _prepareHeaders(String key, String secret, String path) async {
     final credentials = await _prefs.getCredentials();
     if (key == null || secret == null) {
       key = credentials.key;
       secret = credentials.secret;
     }
+    return headers(key: key, secret: secret, path: path, body: "{}");
+  }
 
-    final response = await post(
-      "$baseUrl/$path",
-      headers: _headers(key: key, secret: secret, path: path, nonce: _getNonce(), body: "{}"),
-    );
+  String _handleResponse(Response response) {
+    final statusCode = response.statusCode;
 
-    var statusCode = response.statusCode;
-    if (isSuccess(statusCode)) {
+    if (_isSuccess(statusCode)) {
       print("success loading orders: ${response.body}");
       return response.body;
     } else {
@@ -111,54 +130,5 @@ class BitfinexApiV2 {
     }
   }
 
-  _executeGet(String path, {String key, String secret}) async {
-    final credentials = await _prefs.getCredentials();
-    if (key == null || secret == null) {
-      key = credentials.key;
-      secret = credentials.secret;
-    }
-
-    final response = await get(
-      "$baseUrl/$path",
-      headers: _headers(key: key, secret: secret, path: path, nonce: _getNonce(), body: "{}"),
-    );
-
-    if (isSuccess(response.statusCode)) {
-      return response.body;
-    } else {
-      throw ApiError(response.statusCode, response.body);
-    }
-  }
-
-  bool isSuccess(int statusCode) => statusCode >= 200 && statusCode < 300;
-
-  Map<String, String> _headers({String key, String secret, String path, int nonce, String body}) {
-    return {
-      'Content-type': 'application/json',
-      "bfx-nonce": nonce.toString(),
-      "bfx-apikey": key,
-      "bfx-signature": _calculateSignature(secret, path, nonce)
-    };
-  }
-
-  String _calculateSignature(String secret, String path, int nonce) {
-    var keyBytes = utf8.encode(secret);
-
-    final signature = "/api/" + path + nonce.toString(); // + body;
-    final signatureBytes = utf8.encode(signature);
-
-    final hmacProvider = HMac(SHA384Digest(), 128);
-    hmacProvider.init(KeyParameter(keyBytes));
-    hmacProvider.reset();
-    hmacProvider.update(signatureBytes, 0, signatureBytes.length);
-
-    var output = Uint8List(hmacProvider.macSize);
-    hmacProvider.doFinal(output, 0);
-    return hex.encode(output);
-  }
-
-  _getNonce() => DateTime.now().millisecondsSinceEpoch;
-
-//endregion
-
+  bool _isSuccess(int statusCode) => statusCode >= 200 && statusCode < 300;
 }
