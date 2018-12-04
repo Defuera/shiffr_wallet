@@ -49,7 +49,7 @@ abstract class ShiffrPageState<
 
           return Scaffold(
             appBar: AppBar(
-              automaticallyImplyLeading: false,
+//              automaticallyImplyLeading: false,
               title: Text(getTitle(), style: Theme.of(context).textTheme.title,),
               actions: getAppBarActions(context),
             ),

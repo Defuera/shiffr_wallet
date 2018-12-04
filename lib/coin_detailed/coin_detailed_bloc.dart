@@ -17,7 +17,7 @@ class CoinDetailedBloc extends ShiffrBloc<CoinDetailedState> {
   }
 
   @override
-  CoinDetailedState get initialState => CoinDetailedState.data();
+  CoinDetailedState get initialState => CoinDetailedState.loading();
 
   @override
   start() {

@@ -122,10 +122,10 @@ class BitfinexApiV2 {
     final statusCode = response.statusCode;
 
     if (_isSuccess(statusCode)) {
-      print("success loading orders: ${response.body}");
+//      print("success loading orders: ${response.body}");
       return response.body;
     } else {
-      print("error loading orders: $statusCode  ${response.body}");
+//      print("error loading orders: $statusCode  ${response.body}");
       throw ApiError(statusCode, response.body);
     }
   }
