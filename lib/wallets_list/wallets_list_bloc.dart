@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:shiffr_wallet/common/model/api_error.dart';
-import 'package:shiffr_wallet/common/model/model_wallet.dart';
+import 'package:shiffr_wallet/common/api/api_error.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_wallet.dart';
 import 'package:shiffr_wallet/wallets_list/interactor.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_list_state.dart';
 import 'package:shiffr_wallet/wallets_list/wallet_ticker.dart';

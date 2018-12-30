@@ -1,4 +1,4 @@
-import 'package:shiffr_wallet/common/model/conversion_utils.dart';
+import 'package:shiffr_wallet/common/api/conversion_utils.dart';
 
 class Wallet {
   final WalletType type; //":"deposit",

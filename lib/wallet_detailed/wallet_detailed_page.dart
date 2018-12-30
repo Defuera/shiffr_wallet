@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shiffr_wallet/common/model/model_order.dart';
-import 'package:shiffr_wallet/common/model/model_wallet.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_order.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_wallet.dart';
 import 'package:shiffr_wallet/common/navigation_helper.dart';
 import 'package:shiffr_wallet/order/order_page.dart';
 import 'package:shiffr_wallet/wallet_detailed/order_list_item_widget.dart';
 import 'package:shiffr_wallet/wallet_detailed/wallet_detailed_presenter.dart';
-import 'package:shiffr_wallet/common/widgets/wallet_widget.dart';
 
 const _ORDERS_HEADER_COUNT = 2;
 

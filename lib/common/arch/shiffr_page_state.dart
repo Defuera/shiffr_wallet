@@ -23,9 +23,13 @@ abstract class ShiffrPageState<
 
   @override
   Widget build(BuildContext context) {
-    appBloc = BlocProvider.of<ApplicationBloc>(context);
-    bloc = createBloc(context);
-    bloc.start();
+    if (appBloc == null) {
+      appBloc = BlocProvider.of<ApplicationBloc>(context);
+    }
+    if (bloc == null) {
+      bloc = createBloc(context);
+      bloc.start();
+    }
 
     var widget;
 
@@ -50,7 +54,7 @@ abstract class ShiffrPageState<
           return Scaffold(
             appBar: AppBar(
 //              automaticallyImplyLeading: false,
-              title: Text(getTitle(), style: Theme.of(context).textTheme.title,),
+              title: Text(getTitle(), style: Theme.of(context).textTheme.title),
               actions: getAppBarActions(context),
             ),
             body: widget,
@@ -59,7 +63,6 @@ abstract class ShiffrPageState<
         });
   }
 
-
   String getTitle();
 
   getDataView(viewModel);
@@ -67,14 +70,13 @@ abstract class ShiffrPageState<
   Widget getLoadingView() => Center(child: CircularProgressIndicator());
 
   Widget getErrorView() => GestureDetector(
-    child: Center(
-      child: Text("Network error, try again later"),
-    ),
-    onTap: () => bloc.start(),
-  );
+        child: Center(
+          child: Text("Network error, try again later"),
+        ),
+        onTap: () => bloc.start(),
+      );
 
   BottomNavigationBar buildBottomNavigationBar(BuildContext context, S state) => null;
 
   List<Widget> getAppBarActions(BuildContext context) => null;
-
 }

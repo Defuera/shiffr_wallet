@@ -1,5 +1,5 @@
 import 'package:shiffr_wallet/common/arch/shiffr_state.dart';
-import 'package:shiffr_wallet/common/model/model_ticker.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_ticker.dart';
 
 class CoinDetailedState extends ShiffrState<CoinDetailedViewModel> {
   CoinDetailedState({

@@ -1,11 +1,11 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/repos/candle_repository.dart';
 import 'package:shiffr_wallet/common/arch/shiffr_bloc.dart';
 import 'package:shiffr_wallet/common/arch/shiffr_state.dart';
 import 'package:shiffr_wallet/common/arch/shiffr_widget_state.dart';
-import 'package:shiffr_wallet/common/model/api/bitfinex_api_v2.dart';
-import 'package:shiffr_wallet/common/model/model_candle.dart';
-import 'package:shiffr_wallet/common/model/repos/candle_repository.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/bitfinex_api_v2.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_candle.dart';
 import 'package:shiffr_wallet/common/widgets/chart_mode.dart';
 import 'package:shiffr_wallet/common/widgets/custom_radio.dart';
 import 'package:shiffr_wallet/common/widgets/paddings.dart';

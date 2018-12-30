@@ -1,6 +1,6 @@
 
-import 'package:shiffr_wallet/common/model/model_ticker.dart';
-import 'package:shiffr_wallet/common/model/model_wallet.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_ticker.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_wallet.dart';
 
 class WalletTicker {
   final String symbol;

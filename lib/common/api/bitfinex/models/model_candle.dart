@@ -1,4 +1,4 @@
-import 'package:shiffr_wallet/common/model/conversion_utils.dart';
+import 'package:shiffr_wallet/common/api/conversion_utils.dart';
 
 class Candle {
   final int timestamp;
@@ -11,7 +11,7 @@ class Candle {
   Candle({this.timestamp, this.open, this.close, this.high, this.low, this.volume});
 
   factory Candle.fromJson(dynamic json) {
-    print(json);
+//    print(json);
     return Candle(
       timestamp: json[0],
       open: parseNullableDouble(json[1]),

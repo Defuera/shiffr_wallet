@@ -1,7 +1,7 @@
 import 'package:shiffr_wallet/coin_detailed/coin_detailed_interactor.dart';
 import 'package:shiffr_wallet/coin_detailed/coin_detailed_state.dart';
 import 'package:shiffr_wallet/common/arch/shiffr_bloc.dart';
-import 'package:shiffr_wallet/common/model/api/bitfinex_api_v2.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/bitfinex_api_v2.dart';
 
 class CoinDetailedBloc extends ShiffrBloc<CoinDetailedState> {
   final String _symbol;

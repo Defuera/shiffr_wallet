@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:shiffr_wallet/common/model/api/bitfinex_signer.dart';
-import 'package:shiffr_wallet/common/model/api_error.dart';
-import 'package:shiffr_wallet/common/model/model_candle.dart';
-import 'package:shiffr_wallet/common/model/model_order.dart';
-import 'package:shiffr_wallet/common/model/model_ticker.dart';
-import 'package:shiffr_wallet/common/model/model_wallet.dart';
+import 'package:shiffr_wallet/common/api/response_handling_utils.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/bitfinex_signer.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_candle.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_order.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_ticker.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_wallet.dart';
 import 'package:shiffr_wallet/common/preferences.dart';
 
 class BitfinexApiV2 {
@@ -79,32 +79,32 @@ class BitfinexApiV2 {
 
   //region shiffr http methods
 
-  _anonymousPost(String path, {String key, String secret}) async {
+  Future<String> _anonymousPost(String path, {String key, String secret}) async {
     final response = await post("$baseUrl/$path");
-    return _handleResponse(response);
+    return handleResponse(response);
   }
 
-  _anonymousGet(String path, {String key, String secret}) async {
+  Future<String> _anonymousGet(String path, {String key, String secret}) async {
     final response = await get("$baseUrl/$path");
-    return _handleResponse(response);
+    return handleResponse(response);
   }
 
-  _authPost(String path, {String key, String secret}) async {
+  Future<String> _authPost(String path, {String key, String secret}) async {
     final response = await post(
       "$baseUrl/$path",
       headers: await _prepareHeaders(key, secret, path),
     );
 
-    return _handleResponse(response);
+    return handleResponse(response);
   }
 
-  _authGet(String path, {String key, String secret}) async {
+  Future<String> _authGet(String path, {String key, String secret}) async {
     final response = await get(
       "$baseUrl/$path",
       headers: await _prepareHeaders(key, secret, path),
     );
 
-    return _handleResponse(response);
+    return handleResponse(response);
   }
 
   //endregion
@@ -118,17 +118,4 @@ class BitfinexApiV2 {
     return headers(key: key, secret: secret, path: path, body: "{}");
   }
 
-  String _handleResponse(Response response) {
-    final statusCode = response.statusCode;
-
-    if (_isSuccess(statusCode)) {
-//      print("success loading orders: ${response.body}");
-      return response.body;
-    } else {
-//      print("error loading orders: $statusCode  ${response.body}");
-      throw ApiError(statusCode, response.body);
-    }
-  }
-
-  bool _isSuccess(int statusCode) => statusCode >= 200 && statusCode < 300;
 }

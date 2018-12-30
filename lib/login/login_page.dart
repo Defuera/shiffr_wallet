@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shiffr_wallet/common/model/model_wallet.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_wallet.dart';
 import 'package:shiffr_wallet/common/navigation_helper.dart';
 import 'package:shiffr_wallet/overview/overview_page.dart';
 import 'package:shiffr_wallet/wallets_list/wallets_list_page.dart';

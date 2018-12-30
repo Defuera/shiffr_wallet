@@ -1,5 +1,5 @@
 import 'package:shiffr_wallet/common/arch/shiffr_state.dart';
-import 'package:shiffr_wallet/common/model/model_ticker.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_ticker.dart';
 
 class TickersState extends ShiffrState<TickersViewModel> {
 
@@ -9,7 +9,8 @@ class TickersState extends ShiffrState<TickersViewModel> {
 }
 
 class TickersViewModel {
+  final bool displayCreatePortfolio;
   final List<Ticker> tickers;
 
-  TickersViewModel(this.tickers);
+  TickersViewModel(this.displayCreatePortfolio, this.tickers);
 }

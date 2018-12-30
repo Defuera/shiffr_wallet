@@ -1,5 +1,5 @@
-import 'package:shiffr_wallet/common/model/api/bitfinex_api_v2.dart';
-import 'package:shiffr_wallet/common/model/model_ticker.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/bitfinex_api_v2.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_ticker.dart';
 
 class CoinDetailedInteractor {
 

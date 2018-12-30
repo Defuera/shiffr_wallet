@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/coin_detailed/coin_detailed_page.dart';
-import 'package:shiffr_wallet/common/model/model_ticker.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_ticker.dart';
 import 'package:shiffr_wallet/common/navigation_helper.dart';
 import 'package:shiffr_wallet/common/utils/ticker_utils.dart';
 import 'package:shiffr_wallet/common/widgets/base_currency_widget.dart';

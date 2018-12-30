@@ -1,6 +1,6 @@
 
-import 'package:shiffr_wallet/common/model/api/bitfinex_api_v2.dart';
-import 'package:shiffr_wallet/common/model/model_candle.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/bitfinex_api_v2.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_candle.dart';
 
 class CandleRepository {
 

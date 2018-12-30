@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/coin_detailed/coin_detailed_bloc.dart';
 import 'package:shiffr_wallet/coin_detailed/coin_detailed_state.dart';
 import 'package:shiffr_wallet/common/arch/shiffr_page_state.dart';
-import 'package:shiffr_wallet/common/model/model_ticker.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_ticker.dart';
 import 'package:shiffr_wallet/common/utils/symbol_utils.dart';
 import 'package:shiffr_wallet/common/utils/ticker_utils.dart';
 import 'package:shiffr_wallet/common/widgets/base_currency_widget.dart';

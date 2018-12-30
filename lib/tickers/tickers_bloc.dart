@@ -1,6 +1,6 @@
 import 'package:shiffr_wallet/common/arch/shiffr_bloc.dart';
-import 'package:shiffr_wallet/common/model/api/bitfinex_api_v2.dart';
-import 'package:shiffr_wallet/common/model/model_ticker.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/bitfinex_api_v2.dart';
+import 'package:shiffr_wallet/common/api/bitfinex/models/model_ticker.dart';
 import 'package:shiffr_wallet/common/utils/ticker_utils.dart';
 import 'package:shiffr_wallet/tickers/tickers_state.dart';
 
@@ -29,7 +29,7 @@ class TickersBloc extends ShiffrBloc<TickersState> {
       filteredTickers.sort((a, b) => b.marketCap().compareTo(a.marketCap()));
       print("size: ${filteredTickers.length}");
 
-      dispatch(TickersState.data(TickersViewModel(filteredTickers)));
+      dispatch(TickersState.data(TickersViewModel(true, filteredTickers)));
     } catch (exception, stacktrace) {
       print("exception: ${exception.toString()}");
       print(stacktrace.toString());
