@@ -1,7 +1,8 @@
+import 'package:bloc/bloc.dart';
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:shiffr_wallet/common/api/bitfinex/repos/candle_repository.dart';
-import 'package:shiffr_wallet/common/arch/shiffr_bloc.dart';
+import 'package:shiffr_wallet/common/arch/lifecycle_events.dart';
 import 'package:shiffr_wallet/common/arch/shiffr_state.dart';
 import 'package:shiffr_wallet/common/arch/shiffr_widget_state.dart';
 import 'package:shiffr_wallet/common/api/bitfinex/bitfinex_api_v2.dart';
@@ -92,7 +93,7 @@ class _CurrencyChartWidgetState extends ShiffrWidgetState<CurrencyChart, Currenc
 
 class CurrencyChartState extends ShiffrState<ViewModel> {
   CurrencyChartState.loading() : super(status: ShiffrStatus.LOADING);
-
+  CurrencyChartState.error() : super(status: ShiffrStatus.ERROR);
   CurrencyChartState.data(ViewModel viewModel) : super(status: ShiffrStatus.DATA, viewModel: viewModel);
 }
 
@@ -103,7 +104,7 @@ class ViewModel {
   ViewModel(this.candles, this.chartMode);
 }
 
-class _CurrencyChartBloc extends ShiffrBloc<CurrencyChartState> {
+class _CurrencyChartBloc extends Bloc<dynamic, CurrencyChartState> {
   final String _coin;
   final _repository = CandleRepository(BitfinexApiV2()); //todo inject
   final baseCurrency = "USD"; //todo inject
@@ -116,25 +117,33 @@ class _CurrencyChartBloc extends ShiffrBloc<CurrencyChartState> {
   CurrencyChartState get initialState => CurrencyChartState.loading();
 
   @override
-  start() {
-    loadCandles();
+  Stream<CurrencyChartState> mapEventToState(state, event) async* {
+    if (event == LifecycleEvent.START) {
+      yield await loadCandles();
+    } else {
+      throw Exception("Unknown event type");
+    }
   }
 
-  void loadCandles() async {
-    dispatch(CurrencyChartState.loading());
+  Future<CurrencyChartState> loadCandles() async {
     try {
-      final candles =
-          await _repository.getCandles(symbol: _coin, baseCurrency: baseCurrency, timeFrame: _getTimeFrame());
-      dispatch(CurrencyChartState.data(ViewModel(candles, _chartMode)));
+      final candles = await _repository.getCandles(
+          symbol: _coin,
+          baseCurrency: baseCurrency,
+          timeFrame: _getTimeFrame()
+      );
+      return CurrencyChartState.data(ViewModel(candles, _chartMode));
     } catch (error, stacktrace) {
       print(error.toString());
       print(stacktrace);
+
+      return CurrencyChartState.error();
     }
   }
 
   onChartModeSelected(ChartMode chartMode) {
     _chartMode = chartMode;
-    loadCandles();
+    dispatch(LifecycleEvent.START);
   }
 
   ///Available values: '1m', '5m', '15m', '30m', '1h', '3h', '6h', '12h', '1D', '7D', '14D', '1M'

@@ -1,0 +1,1 @@
+enum LifecycleEvent { START, DESTROY }

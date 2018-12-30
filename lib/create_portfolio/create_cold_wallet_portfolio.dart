@@ -1,5 +1,5 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:shiffr_wallet/common/arch/shiffr_bloc.dart';
 import 'package:shiffr_wallet/common/arch/shiffr_page_state.dart';
 import 'package:shiffr_wallet/common/arch/shiffr_state.dart';
 
@@ -53,10 +53,13 @@ class _State extends ShiffrState<_ViewModel> {
 
 class _ViewModel {}
 
-class _CreateColdWalletPortfolioBloc extends ShiffrBloc<_State> {
+class _CreateColdWalletPortfolioBloc extends Bloc<dynamic, _State> {
   @override
   _State get initialState => _State.initial();
 
   @override
-  void start() {}
+  Stream<_State> mapEventToState(_State state, event) {
+    return null;
+  }
+
 }

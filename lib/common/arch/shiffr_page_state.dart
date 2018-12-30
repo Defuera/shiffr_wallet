@@ -1,13 +1,14 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shiffr_wallet/app/app_bloc.dart';
-import 'package:shiffr_wallet/common/arch/shiffr_bloc.dart';
+import 'package:shiffr_wallet/common/arch/lifecycle_events.dart';
 import 'package:shiffr_wallet/common/arch/shiffr_state.dart';
 
 abstract class ShiffrPageState<
     T extends StatefulWidget,
     S extends ShiffrState,
-    B extends ShiffrBloc<S>
+    B extends Bloc<dynamic, S>
   > extends State<T> {
 
   ApplicationBloc appBloc;
@@ -17,6 +18,7 @@ abstract class ShiffrPageState<
 
   @override
   void dispose() {
+    bloc.dispatch(LifecycleEvent.DESTROY);
     bloc.dispose();
     super.dispose();
   }
@@ -28,7 +30,7 @@ abstract class ShiffrPageState<
     }
     if (bloc == null) {
       bloc = createBloc(context);
-      bloc.start();
+      bloc.dispatch(LifecycleEvent.START);
     }
 
     var widget;
@@ -73,7 +75,7 @@ abstract class ShiffrPageState<
         child: Center(
           child: Text("Network error, try again later"),
         ),
-        onTap: () => bloc.start(),
+        onTap: () => bloc.dispatch(LifecycleEvent.START),
       );
 
   BottomNavigationBar buildBottomNavigationBar(BuildContext context, S state) => null;
