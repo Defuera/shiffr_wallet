@@ -65,3 +65,5 @@ out/
 pubspec.lock
 
 lib/generated/*
+
+android/app/release/*

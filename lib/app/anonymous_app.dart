@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shiffr_wallet/app/app_bloc.dart';
-import 'package:shiffr_wallet/app/colors.dart';
-import 'package:shiffr_wallet/splash/splash_page.dart';
+import 'package:shiffr_wallet/app/themes.dart';
 import 'package:shiffr_wallet/tickers/tickers_page.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 
 class AnonymousApp extends StatelessWidget {
   final ApplicationBloc appBloc = ApplicationBloc();
@@ -13,42 +14,19 @@ class AnonymousApp extends StatelessWidget {
     return BlocProvider<ApplicationBloc>(
       bloc: appBloc,
       child: MaterialApp(
+//        localizationsDelegates: [
+//          GlobalMaterialLocalizations.delegate,
+//          GlobalWidgetsLocalizations.delegate,
+//        ],
+//        supportedLocales: [
+//          const Locale('en', 'US'),
+//          const Locale('ru', 'RU'),
+//        ],
         title: 'Flutter Demo',
-        theme: ThemeData(
-            brightness: Brightness.dark,
-            primaryTextTheme: buildPrimaryTextTheme(),
-            textTheme: buildTextTheme(),
-            primaryColor: Color(0xFF19375F),
-            cardColor: ShiffrColors.cardBlue,
-            primaryColorBrightness: Brightness.dark,
-//            primaryColorDark: Color(0xFF3F88C5),
-            accentColor: Color(0xFF3F88C5),
-            scaffoldBackgroundColor: ShiffrColors.bgBlue,
-//            bottomAppBarColor: Color(0xFF0A1B32),
-            buttonColor: ShiffrColors.btnBlue,
-            tabBarTheme: TabBarTheme(labelColor: Colors.amber)),
+        theme: shiffrThemeData,
         home: TickersPage(),
       ),
     );
   }
 
-  TextTheme buildPrimaryTextTheme() {
-    return TextTheme(
-      body1: TextStyle(color: Colors.white, fontSize: 17.0),
-      title: TextStyle(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w600),
-      headline: TextStyle(color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.w600),
-      caption: TextStyle(color: Colors.white, fontSize: 12.0),
-      subtitle: TextStyle(color: Colors.white, fontSize: 15.0),
-    );
-  }
-
-  TextTheme buildTextTheme() {
-    return TextTheme(
-      body1: TextStyle(color: Colors.white, fontSize: 17.0),
-      title: TextStyle(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.bold),
-      headline: TextStyle(color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.w600),
-      caption: TextStyle(color: Colors.white, fontSize: 12.0),
-      subtitle: TextStyle(color: Colors.white, fontSize: 15.0),
-    );
-  }
 }
