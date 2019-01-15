@@ -56,7 +56,7 @@ abstract class ShiffrPageState<
           return Scaffold(
             appBar: AppBar(
 //              automaticallyImplyLeading: false,
-              title: Text(getTitle(), style: Theme.of(context).textTheme.title),
+              title: Text(getTitle(context), style: Theme.of(context).textTheme.title),
               actions: getAppBarActions(context),
             ),
             body: widget,
@@ -65,7 +65,7 @@ abstract class ShiffrPageState<
         });
   }
 
-  String getTitle();
+  String getTitle(BuildContext context);
 
   getDataView(viewModel);
 

@@ -42,7 +42,7 @@ class _CreateColdWalletPortfolioPageState extends ShiffrPageState<CreateColdWall
   }
 
   @override
-  String getTitle() {
+  String getTitle(BuildContext context) {
     return "New cold wallet";
   }
 }

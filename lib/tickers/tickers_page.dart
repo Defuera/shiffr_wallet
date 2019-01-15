@@ -3,6 +3,7 @@ import 'package:shiffr_wallet/common/arch/shiffr_page_state.dart';
 import 'package:shiffr_wallet/common/navigation_helper.dart';
 import 'package:shiffr_wallet/common/widgets/ticker_widget.dart';
 import 'package:shiffr_wallet/create_portfolio/create_portfolio.dart';
+import 'package:shiffr_wallet/generated/i18n.dart';
 import 'package:shiffr_wallet/tickers/tickers_bloc.dart';
 import 'package:shiffr_wallet/tickers/tickers_state.dart';
 
@@ -20,8 +21,8 @@ class _TickersPageState extends ShiffrPageState<TickersPage, TickersState, Ticke
   }
 
   @override
-  String getTitle() {
-    return "Tickers";
+  String getTitle(BuildContext context) {
+    return S.of(context).tickers_page_title;
   }
 
   @override
@@ -60,7 +61,7 @@ class _TickersPageState extends ShiffrPageState<TickersPage, TickersState, Ticke
           alignment: Alignment.center,
           child: GestureDetector(
             onTap: () => navigateTo(context, CreatePortfolioPage()),
-            child: Text("Add portfolio"),
+            child: Text(S.of(context).tickers_page_add_portfolio),
           ),
         ),
       ),

@@ -54,7 +54,7 @@ class CoinDetailedPageState extends ShiffrPageState<CoinDetailedPage, CoinDetail
   }
 
   @override
-  String getTitle() {
+  String getTitle(BuildContext context) {
     return symbolToTicker(_symbol);
   }
 

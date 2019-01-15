@@ -24,7 +24,7 @@ class _CreatePortfolioPageState extends ShiffrPageState {
   }
 
   @override
-  String getTitle() {
+  String getTitle(BuildContext context) {
     return "Add portfolio";
   }
 
